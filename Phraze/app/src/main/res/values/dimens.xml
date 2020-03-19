@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_view_height">60dp</dimen>
+    <dimen name="default_view_height">50dp</dimen>
+    <dimen name="default_layout_padding">10dp</dimen>
 </resources>

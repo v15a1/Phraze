@@ -27,13 +27,13 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Cursor allPhrases = db.getAllPhrases();
                 if(allPhrases.getCount() == 0) {
-                    // show message
-                    Log.d(TAG, "onClick: ");
+                    Log.d(TAG, "onClick: returned 0 entries");
                     return;
                 }
 
                 StringBuilder buffer = new StringBuilder();
                 while (allPhrases.moveToNext()) {
+                    Log.d(TAG, "onClick: got values");
                     buffer.append("Id :").append(allPhrases.getString(0)).append("\n");
                     buffer.append("Phrase :").append(allPhrases.getString(1)).append("\n");
                 }

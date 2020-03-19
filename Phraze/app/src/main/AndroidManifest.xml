@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".DisplayPhrasesActivity"></activity>
+        <activity android:name=".EditPhrasesActivity"></activity>
+        <activity android:name=".DisplayPhrasesActivity" />
         <activity android:name=".AddPhraseActivity" />
         <activity android:name=".SplashScreen">
             <intent-filter>

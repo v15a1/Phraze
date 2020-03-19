@@ -22,4 +22,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_phrase_activity_button" />
+
+    <Button
+        android:id="@+id/edit_phrases_activity_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_phrases_button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_phrases_activity_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
