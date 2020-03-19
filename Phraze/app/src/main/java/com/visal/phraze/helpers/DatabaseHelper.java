@@ -59,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return updated != -1;
     }
 
+    //method to retrieve finally added entries
     public Cursor getLastAddedPhrase(){
         database = this.getReadableDatabase();
         return database.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + COLUMN_1 + " DESC LIMIT 3", null);
