@@ -25,7 +25,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         displayPhrasesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor allPhrases = db.getAllPhrases();
+                Cursor allPhrases = db.getAllPhraseData();
                 if(allPhrases.getCount() == 0) {
                     Log.d(TAG, "onClick: returned 0 entries");
                     return;

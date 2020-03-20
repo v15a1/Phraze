@@ -5,5 +5,5 @@
     <string name="show_phrases_button_text">SHOW PHRASES</string>
     <string name="recently_added_phrase_card_title">RECENTLY ADDED PHRASE</string>
     <string name="enter_a_phrase_to_save_edittext_hint">Enter a phrase to save</string>
-    <string name="show_recent_button_title">show recent</string>
+    <string name="show_recent_button_title">SHOW RECENTLY ADDED</string>
 </resources>

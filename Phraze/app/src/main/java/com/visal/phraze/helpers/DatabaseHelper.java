@@ -8,10 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.nio.Buffer;
+import java.util.ArrayList;
 
 //http://www.codebind.com/android-tutorials-and-examples/android-sqlite-tutorial-example/
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
     //constant values of the database and table
     private static final String DATABASE_NAME = "Phraze.db";
     private static final String TABLE_NAME = "phrase_table";
@@ -44,25 +46,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //method to retrieve all values from the table
-    public Cursor getAllPhrases() {
+    public Cursor getAllPhraseData() {
         database = this.getReadableDatabase();
         return database.rawQuery("select * from " + TABLE_NAME, null);
     }
 
     //method to update a phrase
-    public boolean updateData(int phraseId,String phrase) {
+    public boolean updateData(int phraseId, String phrase) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_1,phraseId);
-        contentValues.put(COLUMN_2,phrase);
+        contentValues.put(COLUMN_1, phraseId);
+        contentValues.put(COLUMN_2, phrase);
         long updated = db.update(TABLE_NAME, contentValues, "PHRASE_ID=" + phraseId, null);
         return updated != -1;
     }
 
-    //method to retrieve finally added entries
-    public Cursor getLastAddedPhrase(){
+    //method to retrieve finally added entries and return an array list
+    public ArrayList getLastAddedPhrases() {
+        ArrayList<String> recentlyAddedPhrases = new ArrayList<>();
         database = this.getReadableDatabase();
-        return database.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + COLUMN_1 + " DESC LIMIT 3", null);
+        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + TABLE_NAME + " ORDER BY " + COLUMN_1 + " DESC LIMIT 3", null);
+        while (cursor.moveToNext()){
+            recentlyAddedPhrases.add(cursor.getString(cursor.getColumnIndex(COLUMN_2)));
+        }
+        return recentlyAddedPhrases;
+    }
 
+    public ArrayList getAllPhrases(){
+        ArrayList<String> allPhrases = new ArrayList<>();
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + TABLE_NAME, null);
+        while (cursor.moveToNext()){
+            allPhrases.add(cursor.getString(cursor.getColumnIndex(COLUMN_2)).toUpperCase());
+        }
+        return allPhrases;
     }
 }

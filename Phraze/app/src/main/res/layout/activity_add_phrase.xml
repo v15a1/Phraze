@@ -4,124 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPhraseActivity"
-    android:padding="@dimen/default_layout_padding">
+    android:padding="@dimen/default_layout_padding"
+    tools:context=".AddPhraseActivity">
 
     <EditText
         android:id="@+id/add_phrase_edittext"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_view_height"
+        android:hint="@string/enter_a_phrase_to_save_edittext_hint"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/colorAccent"
-        android:hint="@string/enter_a_phrase_to_save_edittext_hint"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/card_view_holder"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
         tools:layout_editor_absoluteX="10dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_layout_padding"
+            android:layout_marginTop="@dimen/default_layout_padding"
+            android:text="Recently added Phrases" />
+
         <androidx.cardview.widget.CardView
-            android:layout_weight="1"
             android:id="@+id/recently_added_phrase_card_one"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/default_layout_padding"
+            android:layout_marginStart="@dimen/default_layout_padding"
+            android:layout_marginEnd="@dimen/default_layout_padding"
+            android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/recently_added_phrase_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/default_layout_padding"
-                    android:layout_marginTop="@dimen/default_layout_padding"
-                    android:layout_marginEnd="@dimen/default_layout_padding"
-                    android:text="@string/recently_added_phrase_card_title"
-                    android:textColor="@color/yellow" />
-
-                <TextView
-                    android:id="@+id/recently_added_phrase_one"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_layout_padding"
-                    android:text=""
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
+                android:layout_margin="@dimen/default_layout_padding"
+                android:text=""
+                android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            android:layout_weight="1"
             android:id="@+id/recently_added_phrase_card_two"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/default_layout_padding"
+            android:layout_marginStart="@dimen/default_layout_padding"
+            android:layout_marginEnd="@dimen/default_layout_padding"
+            android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/recently_added_phrase_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/default_layout_padding"
-                    android:layout_marginTop="@dimen/default_layout_padding"
-                    android:layout_marginEnd="@dimen/default_layout_padding"
-                    android:text="@string/recently_added_phrase_card_title"
-                    android:textColor="@color/yellow" />
-
-                <TextView
-                    android:id="@+id/recently_added_phrase_two"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_layout_padding"
-                    android:text=""
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
+                android:layout_margin="@dimen/default_layout_padding"
+                android:text=""
+                android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            android:layout_weight="1"
             android:id="@+id/recently_added_phrase_card_three"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/default_layout_padding"
+            android:layout_marginStart="@dimen/default_layout_padding"
+            android:layout_marginEnd="@dimen/default_layout_padding"
+            android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/recently_added_phrase_three"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/default_layout_padding"
-                    android:layout_marginTop="@dimen/default_layout_padding"
-                    android:layout_marginEnd="@dimen/default_layout_padding"
-                    android:text="@string/recently_added_phrase_card_title"
-                    android:textColor="@color/yellow" />
-
-                <TextView
-                    android:id="@+id/recently_added_phrase_three"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_layout_padding"
-                    android:text=""
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
+                android:layout_margin="@dimen/default_layout_padding"
+                android:text=""
+                android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
@@ -135,15 +101,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_view_holder" />
+
     <Button
         android:id="@+id/save_data_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_view_height"
-        android:textColor="@color/yellow"
-        android:textSize="18sp"
         android:background="@drawable/button_style"
         android:text="@string/save_button_text"
+        android:textColor="@color/yellow"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
