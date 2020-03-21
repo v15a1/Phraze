@@ -7,6 +7,17 @@
     tools:context=".DisplayPhrasesActivity"
     android:padding="@dimen/default_layout_padding">
 
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/all_phrase_recyclerview"
+        android:scrollbars="vertical"
+        />
+
     <Button
         android:id="@+id/display_phrases_button"
         android:layout_width="match_parent"

@@ -73,6 +73,7 @@
                 android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/recently_added_phrase_card_three"
             android:layout_width="match_parent"

@@ -10,10 +10,13 @@ import android.widget.Button;
 
 import com.visal.phraze.helpers.DatabaseHelper;
 
+import java.util.List;
+
 public class DisplayPhrasesActivity extends AppCompatActivity {
     private static final String TAG = DisplayPhrasesActivity.class.getSimpleName();
     Button displayPhrasesButton;
     DatabaseHelper db;
+    private List<CardDetails> cardDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
