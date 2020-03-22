@@ -1,15 +1,20 @@
 package com.visal.phraze;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.visal.phraze.helpers.DatabaseHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayPhrasesActivity extends AppCompatActivity {
@@ -17,6 +22,8 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
     Button displayPhrasesButton;
     DatabaseHelper db;
     private List<CardDetails> cardDetails;
+    private ArrayList allPhrases;
+    ListView phraseListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +31,17 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_phrases);
         displayPhrasesButton = findViewById(R.id.display_phrases_button);
         db = new DatabaseHelper(this);
+        allPhrases = db.getAllPhrases();
+//        recyclerView = findViewById(R.id.all_phrase_recyclerview);
+        phraseListView = findViewById(R.id.phrases_listview);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this,R.layout.list_item, allPhrases);
+        phraseListView.setAdapter(arrayAdapter);
+
+
+        List<CardDetails> cardDetailsList = new ArrayList<>();
+        for (int i = 0; i < allPhrases.size(); i++){
+            cardDetailsList.add(new CardDetails("a", i));
+        }
 
         displayPhrasesButton.setOnClickListener(new View.OnClickListener() {
             @Override

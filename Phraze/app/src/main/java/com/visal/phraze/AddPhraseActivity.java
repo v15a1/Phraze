@@ -69,9 +69,9 @@ public class AddPhraseActivity extends AppCompatActivity {
                     Log.d(TAG, "onClick: has the phrase been inserted? " + isDataInserted);
                 } else if (savedPhrases.contains(phrase.toUpperCase())) {
                     if (phrase.equals("")) {
-                        AlertDialogComponent.basicAlert(AddPhraseActivity.this, "Please enter a phrase to save");
+                        AlertDialogComponent.basicAlert(AddPhraseActivity.this, "Please enter a phrase to save.");
                     } else {
-                        AlertDialogComponent.basicAlert(AddPhraseActivity.this, "The entered phrase is already in the database. Please enter a diff");
+                        AlertDialogComponent.basicAlert(AddPhraseActivity.this, "The entered phrase is already in the database. Please enter a different phrase.");
                     }
                 }
             }
@@ -105,4 +105,6 @@ public class AddPhraseActivity extends AppCompatActivity {
         cardViewText2.setText(recentlyAdded.get(1).toString());
         cardViewText3.setText(recentlyAdded.get(2).toString());
     }
+
+    //TODO: add life cyclemethod to update list on statechange
 }

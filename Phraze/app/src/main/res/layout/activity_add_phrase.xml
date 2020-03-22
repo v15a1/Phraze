@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_layout_padding"
+    android:padding="@dimen/default_layout_spacing"
     tools:context=".AddPhraseActivity">
 
     <EditText
@@ -29,17 +29,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_layout_padding"
-            android:layout_marginTop="@dimen/default_layout_padding"
+            android:layout_marginStart="@dimen/default_layout_spacing"
+            android:layout_marginTop="@dimen/default_layout_spacing"
             android:text="Recently added Phrases" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/recently_added_phrase_card_one"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_layout_padding"
-            android:layout_marginStart="@dimen/default_layout_padding"
-            android:layout_marginEnd="@dimen/default_layout_padding"
+            android:layout_marginTop="@dimen/default_layout_spacing"
+            android:layout_marginStart="@dimen/default_layout_spacing"
+            android:layout_marginEnd="@dimen/default_layout_spacing"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
@@ -48,7 +48,7 @@
                 android:id="@+id/recently_added_phrase_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_layout_padding"
+                android:layout_margin="@dimen/default_layout_spacing"
                 android:text=""
                 android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
@@ -57,9 +57,9 @@
             android:id="@+id/recently_added_phrase_card_two"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_layout_padding"
-            android:layout_marginStart="@dimen/default_layout_padding"
-            android:layout_marginEnd="@dimen/default_layout_padding"
+            android:layout_marginTop="@dimen/default_layout_spacing"
+            android:layout_marginStart="@dimen/default_layout_spacing"
+            android:layout_marginEnd="@dimen/default_layout_spacing"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
@@ -68,7 +68,7 @@
                 android:id="@+id/recently_added_phrase_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_layout_padding"
+                android:layout_margin="@dimen/default_layout_spacing"
                 android:text=""
                 android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
@@ -78,7 +78,7 @@
             android:id="@+id/recently_added_phrase_card_three"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/default_layout_padding"
+            android:layout_margin="@dimen/default_layout_spacing"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
             tools:layout_editor_absoluteX="10dp">
@@ -87,7 +87,7 @@
                 android:id="@+id/recently_added_phrase_three"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_layout_padding"
+                android:layout_margin="@dimen/default_layout_spacing"
                 android:text=""
                 android:textColor="@color/colorAccent" />
         </androidx.cardview.widget.CardView>
