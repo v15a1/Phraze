@@ -48,6 +48,9 @@ public class AddPhraseActivity extends AppCompatActivity {
         toggleRecentlyAddedButton = findViewById(R.id.show_recently_added_button);
         collapeArrow = getResources().getDrawable(R.drawable.ic_expand_less_black_24dp);
         expandArrow = getResources().getDrawable(R.drawable.ic_expand_more_black_24dp);
+        cardViewText1 = findViewById(R.id.recently_added_phrase_one);
+        cardViewText2 = findViewById(R.id.recently_added_phrase_two);
+        cardViewText3 = findViewById(R.id.recently_added_phrase_three);
 
         //getting data from the SQLite database
         recentlyAdded = db.getLastAddedPhrases();
@@ -97,14 +100,17 @@ public class AddPhraseActivity extends AppCompatActivity {
     }
 
     public void setRecentlyAddedCards(ArrayList recentlyAdded) {
-        cardViewText1 = findViewById(R.id.recently_added_phrase_one);
-        cardViewText2 = findViewById(R.id.recently_added_phrase_two);
-        cardViewText3 = findViewById(R.id.recently_added_phrase_three);
-
-        cardViewText1.setText(recentlyAdded.get(0).toString());
-        cardViewText2.setText(recentlyAdded.get(1).toString());
-        cardViewText3.setText(recentlyAdded.get(2).toString());
+        if (recentlyAdded.size() > 0) {
+            cardViewText1.setText(recentlyAdded.get(0).toString());
+            cardViewText2.setText(recentlyAdded.get(1).toString());
+            cardViewText3.setText(recentlyAdded.get(2).toString());
+        }else{
+            Log.d(TAG, "setRecentlyAddedCards: recently added == 0");
+            cardViewText1.setVisibility(View.GONE);
+            cardViewText2.setVisibility(View.GONE);
+            cardViewText3.setVisibility(View.GONE);
+            toggleRecentlyAddedButton.setVisibility(View.GONE);
+        }
     }
-
     //TODO: add life cyclemethod to update list on statechange
 }

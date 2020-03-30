@@ -13,6 +13,7 @@
         android:layout_height="@dimen/default_view_height"
         android:hint="@string/enter_a_phrase_to_save_edittext_hint"
         android:textColor="@color/colorAccent"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
