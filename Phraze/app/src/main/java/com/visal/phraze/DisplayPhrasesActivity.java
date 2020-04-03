@@ -52,7 +52,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         phraseRecyclerView.setHasFixedSize(true);
         phraseLayoutManager = new LinearLayoutManager(this);
         phraseRecyclerView.setLayoutManager(phraseLayoutManager);
-        phraseAdapter = new PhraseAdapter(allPhrases);
+        phraseAdapter = new DisplayPhrasesAdapter(allPhrases);
         phraseRecyclerView.setAdapter(phraseAdapter);
 
         //implementing swipe to delete functionality
@@ -86,7 +86,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 allPhrases = searchForPhrases(searchValue);
                 //updating the recycler view
                 Log.d(TAG, "onTextChanged: invoked");
-                phraseAdapter = new PhraseAdapter(allPhrases);
+                phraseAdapter = new DisplayPhrasesAdapter(allPhrases);
                 phraseRecyclerView.setAdapter(phraseAdapter);
             }
 

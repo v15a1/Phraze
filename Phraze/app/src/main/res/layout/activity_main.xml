@@ -55,7 +55,7 @@
             android:layout_height="@dimen/default_view_height"
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
-            android:text="@string/show_phrases_button_text"
+            android:text="@string/edit_phrases_button_text"
             android:textColor="@color/yellow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,5 @@
 package com.visal.phraze;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 //https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
-public class PhraseAdapter extends RecyclerView.Adapter<PhraseAdapter.PhraseViewHolder> {
+public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAdapter.PhraseViewHolder> {
 
-    private static final String TAG = PhraseAdapter.class.getSimpleName();
+    private static final String TAG = DisplayPhrasesAdapter.class.getSimpleName();
     private List<String> phrases;
 
     //default constructor
-    public PhraseAdapter(List<String> phrases) {
+    public DisplayPhrasesAdapter(List<String> phrases) {
         this.phrases = phrases;
     }
 
     @NonNull
     @Override
     public PhraseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_phrases_card_item, parent, false);
         return new PhraseViewHolder(view);
     }
 
@@ -43,7 +42,7 @@ public class PhraseAdapter extends RecyclerView.Adapter<PhraseAdapter.PhraseView
         public TextView textView;
         public PhraseViewHolder(View v) {
             super(v);
-            textView = v.findViewById(R.id.card_textview);
+            textView = v.findViewById(R.id.display_phrases_card_textview);
         }
     }
 }
