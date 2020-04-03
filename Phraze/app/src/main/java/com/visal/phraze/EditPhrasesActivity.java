@@ -15,7 +15,9 @@ import com.visal.phraze.helpers.DatabaseHelper;
 import java.util.ArrayList;
 
 public class EditPhrasesActivity extends AppCompatActivity implements RecyclerViewRadioChangeListener {
+
     private static final String TAG = EditPhrasesActivity.class.getSimpleName();
+
     DatabaseHelper db;
     private ArrayList<String> phrasesInDB;
     RecyclerView editPhraseRecyclerView;
@@ -41,6 +43,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         phraseValue = findViewById(R.id.edit_phrase_edittext);
         phraseValue.setEnabled(false);
 
+        //edit activity recycler view
         editPhraseRecyclerView = findViewById(R.id.edit_phrases_recycler_view);
         editPhraseRecyclerView.setHasFixedSize(true);
         editPhraseLayoutManager = new LinearLayoutManager(this);
@@ -48,7 +51,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         editPhraseAdapter = new EditPhrasesAdapter(allPhrases, this);
         editPhraseRecyclerView.setAdapter(editPhraseAdapter);
 
-
+        //onclick listener to get the selected item and enable editting
         editPhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,12 +62,20 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             }
         });
 
+        //saving the data in the database and the retrieved list
         savePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newPhraseText = phraseValue.getText().toString();
                 allPhrases.set(selectedPhraseIndex, newPhraseText);
                 editPhraseAdapter.notifyDataSetChanged();
+                boolean updated = db.updateData(selectedPhraseIndex + 1, newPhraseText );
+                //log statements to check success of the updating query
+                if (updated){
+                    Log.d(TAG, "onClick: Successfully updated fields");
+                }else{
+                    Log.d(TAG, "onClick: unsuccessfull update of fields");
+                }
             }
         });
     }
