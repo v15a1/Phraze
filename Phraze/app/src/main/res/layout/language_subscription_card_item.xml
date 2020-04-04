@@ -17,34 +17,21 @@
             >
 
             <TextView
-                android:id="@+id/edit_phrases_card_textview"
+                android:id="@+id/subscription_card_textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_layout_spacing"
                 android:layout_weight="10"
-                android:textSize="20sp"
                 android:textAlignment="viewStart"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintEnd_toStartOf="@+id/subscription_checkbox"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/edit_phrase_card_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_layout_spacing"
-                android:layout_weight="1"
-                android:text="6d"
-                android:textAlignment="center"
-                android:textColor="#ccc"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/edit_phrase_radio"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.517" />
 
-            <RadioButton
-                android:id="@+id/edit_phrase_radio"
+            <CheckBox
+                android:id="@+id/subscription_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

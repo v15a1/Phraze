@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     Button addPhraseActivityBtn;
     Button showPhrasesActivityBtn;
     Button editPhraseActivityBtn;
+    Button languageSubscriptionActivityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         addPhraseActivityBtn = findViewById(R.id.add_phrase_activity_button);
         showPhrasesActivityBtn = findViewById(R.id.show_phrases_activity_button);
         editPhraseActivityBtn = findViewById(R.id.edit_phrases_activity_button);
+        languageSubscriptionActivityBtn = findViewById(R.id.language_subscription_activity_button);
 
         addPhraseActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,5 +43,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, EditPhrasesActivity.class));
             }
         });
+
+        languageSubscriptionActivityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LanguageSubscriptionActivity.class));
+            }
+        });
+
+
     }
 }
