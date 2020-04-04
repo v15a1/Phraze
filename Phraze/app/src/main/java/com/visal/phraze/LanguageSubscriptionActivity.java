@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class LanguageSubscriptionActivity extends AppCompatActivity {
     private static final String TAG = LanguageSubscriptionActivity.class.getSimpleName();
     private static ArrayList<IdentifiableLanguage> languages;
+    private static ArrayList<Boolean> cardChecked;
     private static RecyclerView subscriptionRecyclerView;
     private static RecyclerView.Adapter subscriptionAdapter;
     private RecyclerView.LayoutManager subscriptionLayoutManager;
@@ -39,6 +40,8 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
         subscriptionUpdateButton.setEnabled(false);
         subscriptionUpdateButton.setAlpha(0.5f);
+
+        cardChecked = new ArrayList<>();
     }
 
     public static class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {

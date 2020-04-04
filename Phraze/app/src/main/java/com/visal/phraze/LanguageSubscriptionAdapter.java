@@ -1,5 +1,6 @@
 package com.visal.phraze;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSubscriptionAdapter.LanguageViewHolder> {
     private List<IdentifiableLanguage> languages;
-
+    private boolean[] ischeckedState;
+    private static final String TAG = LanguageSubscriptionActivity.class.getSimpleName();
     public LanguageSubscriptionAdapter(List<IdentifiableLanguage> languages) {
         this.languages = languages;
+        ischeckedState = new boolean[languages.size()];
     }
 
     @NonNull
@@ -45,8 +49,16 @@ public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSu
             super(view);
             subscriptionTextView = view.findViewById(R.id.subscription_card_textview);
             checkBox =  view.findViewById(R.id.subscription_checkbox);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ischeckedState[getAdapterPosition()] = true;
+                    Log.d(TAG, "LanguageViewHolder: the checked index is " + Arrays.toString(ischeckedState));
 
+                }
+            });
+            }
 
         }
     }
-}
+
