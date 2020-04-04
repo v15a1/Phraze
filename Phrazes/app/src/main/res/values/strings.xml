@@ -10,7 +10,4 @@
     <string name="language_subscription_button_text">LANGUAGE SUBSCRIPTION</string>
     <string name="translate_button_text">TRANSLATE</string>
     <string name="language_subscription_update_button_text">UPDATE</string>
-    <string name="language_translator_apikey">lHcLKmDes4gSkHDkbisAQPjoVgXkPZXZUieen1mPNEA_</string>
-    <string name="language_translator_url">https://api.eu-gb.language-translator.watson.cloud.ibm.com/instances/a27469d0-da65-41f4-8c2a-1db04597da4e</string>
-
 </resources>
