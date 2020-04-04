@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //constant values of the database and table
     private static final String DATABASE_NAME = "Phraze.db";
     private static final String TABLE_NAME = "phrase_table";
+    private static final String SUBSCRIBED_LANGUAGES = "subscribed_languages_table"
     private static final String COLUMN_1 = "PHRASE_ID";
     private static final String COLUMN_2 = "PHRASE";
     private SQLiteDatabase database;
@@ -28,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " (PHRASE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PHRASE TEXT)");
+        db.execSQL("create table " + SUBSCRIBED_LANGUAGES + " (PHRASE_ID INTEGER PRIMARY KEY , LANGUAGE TEXT)");
     }
 
     @Override

@@ -22,18 +22,11 @@ public class EditPhrasesAdapter extends RecyclerView.Adapter<EditPhrasesAdapter.
     private int selectedCardIndex = -1;
     private static RecyclerViewRadioChangeListener radioButtonListener;
 
-    public EditPhrasesAdapter(){
-        phrases = new ArrayList<>();
-    }
-
     public EditPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener ) {
         this.phrases = phrases;
         radioButtonListener = listener;
     }
 
-    public int getSelectedCardIndex() {
-        return selectedCardIndex;
-    }
 
     @NonNull
     @Override

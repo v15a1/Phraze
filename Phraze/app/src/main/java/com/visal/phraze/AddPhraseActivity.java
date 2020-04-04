@@ -39,9 +39,9 @@ public class AddPhraseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_phrase);
 
-        //instance of DatabaseHelper
+//        instance of DatabaseHelper
         db = new DatabaseHelper(this);
-        //accessing UI elements
+//        accessing UI elements
         addPhraseEdittext = findViewById(R.id.add_phrase_edittext);
         saveDataButton = findViewById(R.id.save_data_button);
         cardViewHolder = findViewById(R.id.card_view_holder);
@@ -52,11 +52,11 @@ public class AddPhraseActivity extends AppCompatActivity {
         cardViewText2 = findViewById(R.id.recently_added_phrase_two);
         cardViewText3 = findViewById(R.id.recently_added_phrase_three);
 
-        //getting data from the SQLite database
+//        getting data from the SQLite database
         recentlyAdded = db.getLastAddedPhrases();
         savedPhrases = db.getAllPhrases();
-        //setting recently added cards
-        setRecentlyAddedCards(recentlyAdded);
+//        setting recently added cards
+//        setRecentlyAddedCards(recentlyAdded);
 
 
         saveDataButton.setOnClickListener(new View.OnClickListener() {
