@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,16 +17,18 @@ import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.visal.phraze.helpers.AccessibilityHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class LanguageSubscriptionActivity extends AppCompatActivity {
+public class LanguageSubscriptionActivity extends AppCompatActivity implements RecyclerViewCheckBoxCheckListener {
     private static final String TAG = LanguageSubscriptionActivity.class.getSimpleName();
     private static ArrayList<IdentifiableLanguage> languages;
-    private static ArrayList<Boolean> cardChecked;
     private static RecyclerView subscriptionRecyclerView;
     private static RecyclerView.Adapter subscriptionAdapter;
     private RecyclerView.LayoutManager subscriptionLayoutManager;
     private static RelativeLayout progressView;
     private static Button subscriptionUpdateButton;
+    private RecyclerViewCheckBoxCheckListener listener = this;
+    private ArrayList<Integer> checkedCardIndexes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,13 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
         subscriptionUpdateButton.setEnabled(false);
         subscriptionUpdateButton.setAlpha(0.5f);
 
-        cardChecked = new ArrayList<>();
+        checkedCardIndexes = new ArrayList<>();
+    }
+
+    @Override
+    public void recyclerOnCheck(View v, ArrayList<Integer> arr) {
+        checkedCardIndexes = arr;
+        Log.d(TAG, "recyclerOnCheck: " + checkedCardIndexes);
     }
 
     public static class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {
@@ -59,9 +68,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<IdentifiableLanguage> identifiableLanguages) {
+            LanguageSubscriptionActivity ls = new LanguageSubscriptionActivity();
             super.onPostExecute(identifiableLanguages);
             languages = identifiableLanguages;
-            subscriptionAdapter = new LanguageSubscriptionAdapter(languages);
+            subscriptionAdapter = new LanguageSubscriptionAdapter(languages, ls.listener);
             subscriptionRecyclerView.setAdapter(subscriptionAdapter);
             progressView.setVisibility(View.GONE);
             subscriptionUpdateButton.setEnabled(true);
