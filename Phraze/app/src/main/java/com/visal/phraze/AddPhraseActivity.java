@@ -67,7 +67,7 @@ public class AddPhraseActivity extends AppCompatActivity {
                 if (!phrase.equals("") && !savedPhrases.contains(phrase.toUpperCase())) {
                     boolean isDataInserted = db.insertPhrase(phrase);
                     recentlyAdded = db.getLastAddedPhrases();
-                    setRecentlyAddedCards(recentlyAdded);
+//                    setRecentlyAddedCards(recentlyAdded);
                     Toast.makeText(addPhraseEdittext.getContext(), "Phrase successfully saved", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onClick: has the phrase been inserted? " + isDataInserted);
                 } else if (savedPhrases.contains(phrase.toUpperCase())) {
@@ -99,18 +99,18 @@ public class AddPhraseActivity extends AppCompatActivity {
         });
     }
 
-    public void setRecentlyAddedCards(ArrayList recentlyAdded) {
-        if (recentlyAdded.size() > 0) {
-            cardViewText1.setText(recentlyAdded.get(0).toString());
-            cardViewText2.setText(recentlyAdded.get(1).toString());
-            cardViewText3.setText(recentlyAdded.get(2).toString());
-        }else{
-            Log.d(TAG, "setRecentlyAddedCards: recently added == 0");
-            cardViewText1.setVisibility(View.GONE);
-            cardViewText2.setVisibility(View.GONE);
-            cardViewText3.setVisibility(View.GONE);
-            toggleRecentlyAddedButton.setVisibility(View.GONE);
-        }
-    }
+//    public void setRecentlyAddedCards(ArrayList recentlyAdded) {
+//        if (recentlyAdded.size() > 0) {
+//            cardViewText1.setText(recentlyAdded.get(0).toString());
+//            cardViewText2.setText(recentlyAdded.get(1).toString());
+//            cardViewText3.setText(recentlyAdded.get(2).toString());
+//        }else{
+//            Log.d(TAG, "setRecentlyAddedCards: recently added == 0");
+//            cardViewText1.setVisibility(View.GONE);
+//            cardViewText2.setVisibility(View.GONE);
+//            cardViewText3.setVisibility(View.GONE);
+//            toggleRecentlyAddedButton.setVisibility(View.GONE);
+//        }
+//    }
     //TODO: add life cyclemethod to update list on statechange
 }

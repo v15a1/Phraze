@@ -18,14 +18,16 @@ import java.util.List;
 
 public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSubscriptionAdapter.LanguageViewHolder> {
     private List<IdentifiableLanguage> languages;
+    private List<Integer> selectedCardIndexes;
     private boolean[] ischeckedState;
     private static final String TAG = LanguageSubscriptionActivity.class.getSimpleName();
     private static RecyclerViewCheckBoxCheckListener checkboxListener;
 
-    public LanguageSubscriptionAdapter(List<IdentifiableLanguage> languages, RecyclerViewCheckBoxCheckListener listener) {
+    public LanguageSubscriptionAdapter(List<IdentifiableLanguage> languages, RecyclerViewCheckBoxCheckListener listener, ArrayList<Integer> selectedCardIndexes) {
         this.languages = languages;
         ischeckedState = new boolean[languages.size()];
         checkboxListener = listener;
+        setCheckedCard(selectedCardIndexes);
     }
 
     @NonNull
@@ -63,6 +65,7 @@ public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSu
                 @Override
                 public void onClick(View v) {
                     if (ischeckedState[getAdapterPosition()]) {
+                        ischeckedState[getAdapterPosition()] = false;
                     } else {
                         ischeckedState[getAdapterPosition()] = true;
                     }
@@ -83,6 +86,13 @@ public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSu
             });
         }
 
+    }
+
+    public void setCheckedCard(List<Integer> indexes) {
+        for (Integer x : indexes){
+            ischeckedState[x] = true;
+        }
+        Log.d(TAG, "setCheckedCard: " + Arrays.toString(ischeckedState));
     }
 }
 
