@@ -48,7 +48,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         editPhraseRecyclerView.setHasFixedSize(true);
         editPhraseLayoutManager = new LinearLayoutManager(this);
         editPhraseRecyclerView.setLayoutManager(editPhraseLayoutManager);
-        editPhraseAdapter = new EditPhrasesAdapter(allPhrases, this);
+        editPhraseAdapter = new RadioRecyclerPhrasesAdapter(allPhrases, this);
         editPhraseRecyclerView.setAdapter(editPhraseAdapter);
 
         //onclick listener to get the selected item and enable editting

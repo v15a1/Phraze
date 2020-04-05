@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".LanguageSubscriptionActivity"/>
-        <activity android:name=".AddPhraseActivity"/>
+        <activity android:name=".TranslatePhraseActivity"></activity>
+        <activity android:name=".LanguageSubscriptionActivity" />
+        <activity android:name=".AddPhraseActivity" />
         <activity android:name=".EditPhrasesActivity" />
         <activity android:name=".DisplayPhrasesActivity" />
         <activity android:name=".SplashScreen">

@@ -1,28 +1,27 @@
 package com.visal.phraze;
 
-import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class EditPhrasesAdapter extends RecyclerView.Adapter<EditPhrasesAdapter.PhraseViewHolder> {
-    private static final String TAG = EditPhrasesAdapter.class.getSimpleName();
+public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyclerPhrasesAdapter.PhraseViewHolder> {
+    private static final String TAG = RadioRecyclerPhrasesAdapter.class.getSimpleName();
     private List<String> phrases;
     private int selectedCardIndex = -1;
     private static RecyclerViewRadioChangeListener radioButtonListener;
 
-    public EditPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener ) {
+    public RadioRecyclerPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener ) {
         this.phrases = phrases;
         radioButtonListener = listener;
     }
@@ -31,7 +30,7 @@ public class EditPhrasesAdapter extends RecyclerView.Adapter<EditPhrasesAdapter.
     @NonNull
     @Override
     public PhraseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_phrases_card_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.radio_card_item, parent, false);
         return new PhraseViewHolder(view);
     }
 
@@ -40,8 +39,14 @@ public class EditPhrasesAdapter extends RecyclerView.Adapter<EditPhrasesAdapter.
         String phrase = phrases.get(position);
         holder.textView.setText(phrase);
         if (selectedCardIndex == position){
-            holder.selectedCard.setChecked(true);
-        };
+            holder.radioButton.setChecked(true);
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#6A6A6A"));
+            holder.textView.setTextColor(Color.parseColor("#FFB800"));
+        }else{
+            holder.radioButton.setChecked(false);
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
+            holder.textView.setTextColor(Color.parseColor("#333333"));
+        }
     }
 
     @Override
@@ -50,14 +55,16 @@ public class EditPhrasesAdapter extends RecyclerView.Adapter<EditPhrasesAdapter.
     }
 
     public class PhraseViewHolder extends RecyclerView.ViewHolder{
+        private CardView cardView;
         public TextView textView;
-        private RadioButton selectedCard;
+        private RadioButton radioButton;
         public PhraseViewHolder(View v) {
             super(v);
+            cardView = v.findViewById(R.id.radio_cardview);
             textView = v.findViewById(R.id.edit_phrases_card_textview);
-            selectedCard = v.findViewById(R.id.edit_phrase_radio);
+            radioButton = v.findViewById(R.id.edit_phrase_radio);
 
-            selectedCard.setOnClickListener(new View.OnClickListener() {
+            radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     selectedCardIndex = getAdapterPosition();

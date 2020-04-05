@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,7 +83,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         protected ArrayList<IdentifiableLanguage> doInBackground(Boolean... booleans) {
             ArrayList<IdentifiableLanguage> languages = new ArrayList();
             if (booleans[0]) {
-                IdentifiableLanguages lans = accessibilityHelper.getTranslator().listIdentifiableLanguages().execute().getResult();
+                IdentifiableLanguages lans = accessibilityHelper.getService().listIdentifiableLanguages().execute().getResult();
                 languages.addAll(lans.getLanguages());
             }
             return languages;
