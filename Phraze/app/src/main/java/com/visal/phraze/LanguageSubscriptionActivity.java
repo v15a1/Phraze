@@ -30,6 +30,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
     private static Button subscriptionUpdateButton;
     private RecyclerViewCheckBoxCheckListener listener = this;
     private static ArrayList<Integer> checkedCardIndexes = new ArrayList<>();
+    private static ArrayList<Language> subscribedLanguages = new ArrayList<>();
 
     DatabaseHelper db;
 
@@ -38,9 +39,9 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_subscription);
         db = new DatabaseHelper(this);
-        Cursor cursor = db.getAllSubscriptions();
-        while (cursor.moveToNext()){
-            checkedCardIndexes.add(cursor.getInt(0));
+        subscribedLanguages = db.getAllSubscriptions();
+        for (Language x: subscribedLanguages){
+            checkedCardIndexes.add(x.getIndex());
         }
 
         Log.d(TAG, "onCreate: checked are" + checkedCardIndexes);
@@ -61,11 +62,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
                 Log.d(TAG, "onClick: indexes are " + checkedCardIndexes);
                 db.deleteLanguageSubscriptionTableData();
                 for (int x = 0; x < checkedCardIndexes.size(); x++) {
+                    int y = checkedCardIndexes.get(x);
                     Log.d(TAG, "onClick: inside loop");
-                    boolean success = db.insertLanguageSubscriptions(checkedCardIndexes.get(x));
+                    boolean success = db.insertLanguageSubscriptions(y, languages.get(y).getName(), languages.get(y).getLanguage());
                     Toast.makeText(LanguageSubscriptionActivity.this, "subs sent? " + success, Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
@@ -73,12 +74,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
 
     @Override
     public void recyclerOnCheck(View v, ArrayList<Integer> arr) {
-        for (int x = 0; x < arr.size(); x++){
-            if (!checkedCardIndexes.contains(arr.get(x))){
-                checkedCardIndexes.add(arr.get(x));
-            }
-        }
-        Log.d(TAG, "recyclerOnCheck: " + checkedCardIndexes);
+        checkedCardIndexes = arr;
     }
 
     public static class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {
@@ -100,10 +96,15 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
             super.onPostExecute(identifiableLanguages);
             languages = identifiableLanguages;
             subscriptionAdapter = new LanguageSubscriptionAdapter(languages, ls.listener, checkedCardIndexes);
+            checkedCardIndexes.clear();
             subscriptionRecyclerView.setAdapter(subscriptionAdapter);
             progressView.setVisibility(View.GONE);
             subscriptionUpdateButton.setEnabled(true);
             subscriptionUpdateButton.setAlpha(1f);
+            //            //debugging loop
+//            for (int x = 0; x< languages.size(); x++){
+//                Log.d(TAG, "onCreate: lan abbs are " + languages.get(x).getLanguage());
+//            }
         }
     }
 }
