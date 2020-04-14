@@ -24,6 +24,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
     RecyclerView.Adapter editPhraseAdapter;
     RecyclerView.LayoutManager editPhraseLayoutManager;
     ArrayList<String> allPhrases;
+    ArrayList<Phrase> phrases;
     int selectedPhraseIndex;
     Button editPhraseButton;
     Button savePhraseButton;
@@ -37,6 +38,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         db = new DatabaseHelper(this);
         phrasesInDB = db.getAllPhrases();
         allPhrases = phrasesInDB;
+        phrases = db.getAllPhraseData();
 
         editPhraseButton = findViewById(R.id.edit_phrase_button);
         savePhraseButton = findViewById(R.id.save_edited_phrase_button);
@@ -48,7 +50,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         editPhraseRecyclerView.setHasFixedSize(true);
         editPhraseLayoutManager = new LinearLayoutManager(this);
         editPhraseRecyclerView.setLayoutManager(editPhraseLayoutManager);
-        editPhraseAdapter = new RadioRecyclerPhrasesAdapter(allPhrases, this);
+        editPhraseAdapter = new RadioRecyclerPhrasesAdapter(phrases, this);
         editPhraseRecyclerView.setAdapter(editPhraseAdapter);
 
         //onclick listener to get the selected item and enable editting

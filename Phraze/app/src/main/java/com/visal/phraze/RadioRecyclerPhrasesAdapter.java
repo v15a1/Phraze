@@ -13,15 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.visal.phraze.helpers.DateTime;
+
 import java.util.List;
 
 public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyclerPhrasesAdapter.PhraseViewHolder> {
     private static final String TAG = RadioRecyclerPhrasesAdapter.class.getSimpleName();
-    private List<String> phrases;
+    private List<Phrase> phrases;
     private int selectedCardIndex = -1;
     private static RecyclerViewRadioChangeListener radioButtonListener;
 
-    public RadioRecyclerPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener) {
+    public RadioRecyclerPhrasesAdapter(List<Phrase> phrases, RecyclerViewRadioChangeListener listener) {
         this.phrases = phrases;
         radioButtonListener = listener;
     }
@@ -36,16 +38,17 @@ public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyc
 
     @Override
     public void onBindViewHolder(@NonNull final PhraseViewHolder holder, final int position) {
-        String phrase = phrases.get(position);
-        holder.textView.setText(phrase);
+        String phrase = phrases.get(position).phrase;
+        holder.phraseTextview.setText(phrase);
+        holder.daysAgoTextview.setText(DateTime.getDaysPassed(phrases.get(position).dateAdded));
         if (selectedCardIndex == position){
             holder.radioButton.setChecked(true);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#6A6A6A"));
-            holder.textView.setTextColor(Color.parseColor("#FFB800"));
+            holder.phraseTextview.setTextColor(Color.parseColor("#FFB800"));
         }else{
             holder.radioButton.setChecked(false);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
-            holder.textView.setTextColor(Color.parseColor("#333333"));
+            holder.phraseTextview.setTextColor(Color.parseColor("#333333"));
         }
     }
 
@@ -56,12 +59,14 @@ public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyc
 
     public class PhraseViewHolder extends RecyclerView.ViewHolder{
         private CardView cardView;
-        public TextView textView;
+        public TextView phraseTextview;
+        public TextView daysAgoTextview;
         private RadioButton radioButton;
         public PhraseViewHolder(View v) {
             super(v);
             cardView = v.findViewById(R.id.radio_cardview);
-            textView = v.findViewById(R.id.edit_phrases_card_textview);
+            phraseTextview = v.findViewById(R.id.edit_phrases_card_textview);
+            daysAgoTextview = v.findViewById(R.id.edit_phrase_card_date);
             radioButton = v.findViewById(R.id.edit_phrase_radio);
 
             radioButton.setOnClickListener(new View.OnClickListener() {

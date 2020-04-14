@@ -37,6 +37,7 @@ import com.ibm.watson.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.text_to_speech.v1.model.SynthesizeOptions;
 import com.visal.phraze.AlertDialogComponent;
 import com.visal.phraze.Language;
+import com.visal.phraze.Phrase;
 import com.visal.phraze.R;
 import com.visal.phraze.RadioRecyclerPhrasesAdapter;
 import com.visal.phraze.RecyclerViewRadioChangeListener;
@@ -59,6 +60,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     private ArrayList<Language> subscribedLanguages;
     private ArrayList<String> subscribedLanguagesNames;
     private static ArrayList<String> allPhrases;
+    private static ArrayList<Phrase> phrases;
     private static RecyclerView translationPhraseRecyclerView;
     private RecyclerView.LayoutManager translatePhraseLayoutManager;
     private RecyclerView.Adapter translatePhraseAdapter;
@@ -109,6 +111,8 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
 
         subscribedLanguages = db.getAllSubscriptions();
         allPhrases = db.getAllPhrases();
+        phrases = db.getAllPhraseData();
+
         subscribedLanguagesNames.add("Select a language");  //setting initial value for the spinner
         for (Language x : subscribedLanguages) {
             subscribedLanguagesNames.add(x.getName());
@@ -117,7 +121,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         translationPhraseRecyclerView.setHasFixedSize(true);
         translatePhraseLayoutManager = new LinearLayoutManager(getActivity());
         translationPhraseRecyclerView.setLayoutManager(translatePhraseLayoutManager);
-        translatePhraseAdapter = new RadioRecyclerPhrasesAdapter(allPhrases, this);
+        translatePhraseAdapter = new RadioRecyclerPhrasesAdapter(phrases, this);
         translationPhraseRecyclerView.setAdapter(translatePhraseAdapter);
 
         //setting values into the spinner

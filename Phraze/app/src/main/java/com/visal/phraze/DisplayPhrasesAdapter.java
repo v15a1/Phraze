@@ -8,15 +8,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.visal.phraze.helpers.DateTime;
+
+import java.util.ArrayList;
 import java.util.List;
 //https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
 public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAdapter.PhraseViewHolder> {
 
     private static final String TAG = DisplayPhrasesAdapter.class.getSimpleName();
-    private List<String> phrases;
+    private ArrayList<Phrase> phrases;
 
     //default constructor
-    public DisplayPhrasesAdapter(List<String> phrases) {
+    public DisplayPhrasesAdapter(ArrayList<Phrase> phrases) {
+        this.phrases = new ArrayList<>();
         this.phrases = phrases;
     }
 
@@ -29,8 +33,11 @@ public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAd
 
     @Override
     public void onBindViewHolder(@NonNull PhraseViewHolder holder, int position) {
-        String phrase = phrases.get(position);
-        holder.textView.setText(phrase);
+        String phrase = phrases.get(position).phrase;
+        String daysAgo = DateTime.getDaysPassed(phrases.get(position).dateAdded);
+
+        holder.phraseTextView.setText(phrase);
+        holder.daysBeforeTextView.setText(daysAgo);
     }
 
     @Override
@@ -39,10 +46,12 @@ public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAd
     }
 
     public static class PhraseViewHolder extends RecyclerView.ViewHolder{
-        public TextView textView;
+        public TextView phraseTextView;
+        public TextView daysBeforeTextView;
         public PhraseViewHolder(View v) {
             super(v);
-            textView = v.findViewById(R.id.display_phrases_card_textview);
+            phraseTextView = v.findViewById(R.id.display_phrases_card_textview);
+            daysBeforeTextView = v.findViewById(R.id.display_phrases_days_before);
         }
     }
 }

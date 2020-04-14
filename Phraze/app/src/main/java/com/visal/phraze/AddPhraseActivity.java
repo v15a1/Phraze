@@ -101,18 +101,14 @@ public class AddPhraseActivity extends AppCompatActivity {
 
     public void setRecentlyAddedCards(ArrayList recentlyAdded) {
         if (savedPhrases.size() > 3){
-            if (recentlyAdded.size() > 0) {
                 cardViewText1.setText(recentlyAdded.get(0).toString());
                 cardViewText2.setText(recentlyAdded.get(1).toString());
                 cardViewText3.setText(recentlyAdded.get(2).toString());
-            } else {
-                Log.d(TAG, "setRecentlyAddedCards: recently added == 0");
-                cardViewText1.setVisibility(View.GONE);
-                cardViewText2.setVisibility(View.GONE);
-                cardViewText3.setVisibility(View.GONE);
-                toggleRecentlyAddedButton.setVisibility(View.GONE);
-            }
-
+        }else{
+            cardViewText1.setVisibility(View.GONE);
+            cardViewText2.setVisibility(View.GONE);
+            cardViewText3.setVisibility(View.GONE);
+            toggleRecentlyAddedButton.setVisibility(View.GONE);
         }
     }
     //TODO: add life cyclemethod to update list on statechange

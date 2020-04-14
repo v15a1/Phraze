@@ -26,7 +26,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
     Button displayPhrasesButton;
     Button clearSearchTextFieldButton;
     DatabaseHelper db;
-    private List<CardDetails> cardDetails;
+    private ArrayList<Phrase> phrases;
     private ArrayList<String> phrasesInDB;
     RecyclerView phraseRecyclerView;
     RecyclerView.Adapter phraseAdapter;
@@ -46,13 +46,14 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         clearSearchTextFieldButton = findViewById(R.id.display_phrases_clear_button);
         searchPhrasesTextField = findViewById(R.id.display_phrases_searchbar);
         allPhrases = phrasesInDB;
+        phrases = db.getAllPhraseData();
         //accessing the Database
         //initializing RecyclerView
         phraseRecyclerView = findViewById(R.id.phrases_recyclerview);
         phraseRecyclerView.setHasFixedSize(true);
         phraseLayoutManager = new LinearLayoutManager(this);
         phraseRecyclerView.setLayoutManager(phraseLayoutManager);
-        phraseAdapter = new DisplayPhrasesAdapter(allPhrases);
+        phraseAdapter = new DisplayPhrasesAdapter(phrases);
         phraseRecyclerView.setAdapter(phraseAdapter);
 
         //implementing swipe to delete functionality
@@ -86,7 +87,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 allPhrases = searchForPhrases(searchValue);
                 //updating the recycler view
                 Log.d(TAG, "onTextChanged: invoked");
-                phraseAdapter = new DisplayPhrasesAdapter(allPhrases);
+                phraseAdapter = new DisplayPhrasesAdapter(phrases);
                 phraseRecyclerView.setAdapter(phraseAdapter);
             }
 
@@ -110,19 +111,8 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         displayPhrasesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor allPhrases = db.getAllPhraseData();
-                if (allPhrases.getCount() == 0) {
-                    Log.d(TAG, "onClick: returned 0 entries");
-                    return;
-                }
+                phrases = db.getAllPhraseData();
 
-                StringBuilder buffer = new StringBuilder();
-                while (allPhrases.moveToNext()) {
-                    Log.d(TAG, "onClick: got values");
-                    buffer.append("Id :").append(allPhrases.getString(0)).append("\n");
-                    buffer.append("Phrase :").append(allPhrases.getString(1)).append("\n");
-                }
-                Log.d(TAG, "onClick: the data are as follows \n " + buffer.toString());
             }
         });
     }
