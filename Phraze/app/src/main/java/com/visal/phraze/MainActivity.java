@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.visal.phraze.fragments.TranslationActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     Button addPhraseActivityBtn;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         translateActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TranslatePhraseActivity.class));
+                startActivity(new Intent(MainActivity.this, TranslationActivity.class));
             }
         });
 

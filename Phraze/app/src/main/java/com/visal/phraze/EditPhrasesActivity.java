@@ -84,6 +84,6 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
     @Override
     public void recyclerViewRadioClick(View v, int position) {
         selectedPhraseIndex = position;
-
+        Log.d(TAG, "recyclerViewRadioClick: position is " + position);
     }
 }

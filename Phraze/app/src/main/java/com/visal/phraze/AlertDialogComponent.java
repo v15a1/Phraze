@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 public class AlertDialogComponent {
     //static method declared to invoke an alert dialog to display to the user
-    static void basicAlert(Context context, String message) {
+    public static void basicAlert(Context context, String message) {
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
 
         //setting a customized alert title

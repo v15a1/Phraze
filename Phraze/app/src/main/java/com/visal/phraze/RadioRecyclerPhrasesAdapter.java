@@ -21,7 +21,7 @@ public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyc
     private int selectedCardIndex = -1;
     private static RecyclerViewRadioChangeListener radioButtonListener;
 
-    public RadioRecyclerPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener ) {
+    public RadioRecyclerPhrasesAdapter(List<String> phrases, RecyclerViewRadioChangeListener listener) {
         this.phrases = phrases;
         radioButtonListener = listener;
     }
