@@ -40,15 +40,17 @@ import com.visal.phraze.Language;
 import com.visal.phraze.R;
 import com.visal.phraze.RadioRecyclerPhrasesAdapter;
 import com.visal.phraze.RecyclerViewRadioChangeListener;
+import com.visal.phraze.RefreshRecyclerView;
 import com.visal.phraze.helpers.AccessibilityHelper;
 import com.visal.phraze.helpers.DatabaseHelper;
+import com.visal.phraze.helpers.SpeechTask;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class LiveTranslationFragment extends Fragment implements RecyclerViewRadioChangeListener {
+public class LiveTranslationFragment extends Fragment implements RecyclerViewRadioChangeListener{
 
     private static final String TAG = LiveTranslationFragment.class.getSimpleName();
     private View layoutView;
@@ -68,9 +70,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     private ImageButton playTextToSpeechButton;
     private ProgressBar voiceProgress;
     private int selectedPhraseIndex;
-    private TextToSpeech textService;
-    private StreamPlayer player;
-    private String abbreviation = "";
+    private static String abbreviation = "";
     private static ArrayList<String> allTranslatedPhrases;
     private static String selectedSpinnerValue;
     private ArrayList<String> abbreviationList;
@@ -106,8 +106,6 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         allPhrases = new ArrayList<>();
         allTranslatedPhrases = new ArrayList<>();
         abbreviationList = new ArrayList();
-        textService = initTextToSpeechService();
-        player = new StreamPlayer();
 
         subscribedLanguages = db.getAllSubscriptions();
         allPhrases = db.getAllPhrases();
@@ -172,9 +170,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         playTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SpeechTask().execute(translatedTextView.getText().toString());
-                voiceProgress.setVisibility(View.VISIBLE);
-                playTextToSpeechButton.setVisibility(View.GONE);
+                new SpeechTask(playTextToSpeechButton, voiceProgress).execute(translatedTextView.getText().toString());
             }
         });
         return layoutView;
@@ -197,6 +193,9 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         mListener = null;
     }
 
+    public interface RefreshTranslations{
+        public void refresh();
+    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
@@ -287,43 +286,12 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             allTranslatedPhrases.addAll(s);
             Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
             for (int x = 0; x < allTranslatedPhrases.size(); x++) {
-                boolean successfulPersistence = db.insertTranslations(selectedSpinnerValue, allPhrases.get(x), allTranslatedPhrases.get(x));
+                boolean successfulPersistence = db.insertTranslations(abbreviation,selectedSpinnerValue, allPhrases.get(x), allTranslatedPhrases.get(x));
                 Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
             }
             progressLayout.setVisibility(View.GONE);
+            new SavedTranslationFragment().refreshAdapter();
         }
     }
-
-    public class SpeechTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            SynthesizeOptions synthesizeOptions = new SynthesizeOptions.Builder()
-                    .text(strings[0])
-                    .voice(SynthesizeOptions.Voice.EN_US_LISAVOICE)
-                    .accept(HttpMediaType.AUDIO_WAV)
-                    .build();
-            player.playStream(textService.synthesize(synthesizeOptions).execute().getResult());
-            return "Did sythesize";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            voiceProgress.setVisibility(View.GONE);
-            playTextToSpeechButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-
-    private TextToSpeech initTextToSpeechService() {
-        Authenticator authenticator = new
-                IamAuthenticator(getString(R.string.text_speech_apikey));
-        TextToSpeech service = new TextToSpeech(authenticator);
-        service.setServiceUrl(getString(R.string.text_speech_url));
-        return service;
-    }
-
-
 }
 

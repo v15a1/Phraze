@@ -63,6 +63,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         });
 
         //saving the data in the database and the retrieved list
+        //https://medium.com/@suragch/updating-data-in-an-android-recyclerview-842e56adbfd8
         savePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,7 +9,7 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.visal.phraze.R;
 
-public class TranslationActivity extends AppCompatActivity implements LiveTranslationFragment.OnFragmentInteractionListener, SavedTranslationFragment.OnFragmentInteractionListener{
+public class TranslationActivity extends AppCompatActivity implements LiveTranslationFragment.OnFragmentInteractionListener, SavedTranslationFragment.OnFragmentInteractionListener, LiveTranslationFragment.RefreshTranslations{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,5 +45,10 @@ public class TranslationActivity extends AppCompatActivity implements LiveTransl
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void refresh() {
+        SavedTranslationFragment.refreshAdapter();
     }
 }

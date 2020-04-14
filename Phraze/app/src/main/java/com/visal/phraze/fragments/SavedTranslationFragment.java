@@ -25,12 +25,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class SavedTranslationFragment extends Fragment {
 
-    private DatabaseHelper db;
+    private static DatabaseHelper db;
+    private TranslationActivity activity;
     private View layoutView;
     private RecyclerView savedTranslationsRecyclerView;
-    RecyclerView.Adapter savedTranslationsAdapter;
+    static RecyclerView.Adapter savedTranslationsAdapter;
     RecyclerView.LayoutManager savedTranslationManager;
-    ArrayList<Translation> allTranslations;
+    private static ArrayList<Translation> allTranslations;
     private static final String TAG = SavedTranslationFragment.class.getSimpleName();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -46,22 +47,10 @@ public class SavedTranslationFragment extends Fragment {
     public SavedTranslationFragment() {
     }
 
-    public static SavedTranslationFragment newInstance(String param1, String param2) {
-        SavedTranslationFragment fragment = new SavedTranslationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        activity = new TranslationActivity();
     }
 
     @Override
@@ -72,13 +61,12 @@ public class SavedTranslationFragment extends Fragment {
         db = new DatabaseHelper(getActivity());
         allTranslations = new ArrayList<>();
         allTranslations = db.getAlltranslations();
-        Log.d(TAG, "onCreateView: the db data is " + allTranslations);
 
         savedTranslationsRecyclerView = layoutView.findViewById(R.id.saved_translations_recyclerview);
         savedTranslationsRecyclerView.setHasFixedSize(true);
         savedTranslationManager = new LinearLayoutManager(getActivity());
         savedTranslationsRecyclerView.setLayoutManager(savedTranslationManager);
-        savedTranslationsAdapter = new SavedTranslationAdapter(allTranslations);
+        savedTranslationsAdapter = new SavedTranslationAdapter(getActivity(), allTranslations);
         savedTranslationsRecyclerView.setAdapter(savedTranslationsAdapter);
 
         return layoutView;
@@ -105,5 +93,14 @@ public class SavedTranslationFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    interface refreshAdapter{
+
+    }
+
+    public static void refreshAdapter() {
+        allTranslations = db.getAlltranslations();
+        savedTranslationsAdapter.notifyDataSetChanged();
     }
 }

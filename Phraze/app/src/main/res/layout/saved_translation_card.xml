@@ -12,35 +12,67 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/saved_translation_phrase_textview"
-            android:layout_marginTop="@dimen/default_layout_spacing"
-            android:layout_marginStart="@dimen/default_layout_spacing"
-            android:layout_marginEnd="@dimen/default_layout_spacing"
-            android:layout_marginBottom="@dimen/default_layout_spacing_5dp"
-            android:textColor="@color/darkGrey"
-           />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginEnd="@dimen/default_layout_spacing"
-            android:layout_marginStart="@dimen/default_layout_spacing"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/saved_translation_translation_textview"
-            android:layout_marginTop="@dimen/default_layout_spacing_5dp"
-            android:layout_marginStart="@dimen/default_layout_spacing"
-            android:layout_marginEnd="@dimen/default_layout_spacing"
-            android:layout_marginBottom="@dimen/default_layout_spacing"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold|italic"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/saved_translation_phrase_textview"
+                    android:layout_marginTop="@dimen/default_layout_spacing"
+                    android:layout_marginStart="@dimen/default_layout_spacing"
+                    android:layout_marginEnd="@dimen/default_layout_spacing"
+                    android:layout_marginBottom="@dimen/default_layout_spacing_5dp"
+                    android:textColor="@color/darkGrey"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginEnd="@dimen/default_layout_spacing"
+                    android:layout_marginStart="@dimen/default_layout_spacing"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/saved_translation_translation_textview"
+                    android:layout_marginTop="@dimen/default_layout_spacing_5dp"
+                    android:layout_marginStart="@dimen/default_layout_spacing"
+                    android:layout_marginEnd="@dimen/default_layout_spacing"
+                    android:layout_marginBottom="@dimen/default_layout_spacing"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold|italic"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/play_saved_text_to_speech"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/default_layout_spacing"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_play_circle_filled_black_24dp"
+                    android:tint="@color/yellow" />
+
+                <ProgressBar
+                    android:id="@+id/saved_voice_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/yellow" />
+            </RelativeLayout>
+
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

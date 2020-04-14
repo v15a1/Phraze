@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SUBS_COLUMN_2 = "SUBS_INDEX";
     private static final String SUBS_COLUMN_3 = "LANG_NAME";
     private static final String SUBS_COLUMN_4 = "LANG_ABBREVIATION";
-    private static final String ALL_TRANSLATIONS_COLUMN_1 = "TRANSLATION_ID";
+    private static final String ALL_TRANSLATIONS_COLUMN_1 = "LANG";
     private static final String ALL_TRANSLATIONS_COLUMN_2 = "LANG_ABBREVIATION";
     private static final String ALL_TRANSLATIONS_COLUMN_3 = "ENGLISH_TRANSLATION";
     private static final String ALL_TRANSLATIONS_COLUMN_4 = "TRANSLATION";
@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME + " (PHRASE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PHRASE TEXT)");
         db.execSQL("create table IF NOT EXISTS " + SUBSCRIBED_LANGUAGES + " (LANGUAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT, SUBS_INDEX INTEGER, LANG_NAME TEXT, LANG_ABBREVIATION TEXT)");
-        db.execSQL("create table IF NOT EXISTS " + SELECTED_TRANSLATIONS + " (TRANSLATION_ID INTEGER PRIMARY KEY AUTOINCREMENT, LANG_ABBREVIATION TEXT, ENGLISH_TRANSLATION TEXT, TRANSLATION TEXT)");
+        db.execSQL("create table IF NOT EXISTS " + SELECTED_TRANSLATIONS + " (TRANSLATION_ID INTEGER PRIMARY KEY AUTOINCREMENT, LANG_ABBREVIATION TEXT, LANG TEXT, ENGLISH_TRANSLATION TEXT, TRANSLATION TEXT)");
     }
 
     @Override
@@ -73,9 +73,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertTranslations(String language, String englishPhrase, String translatedPhrase){
+    public boolean insertTranslations(String languageAbbr, String language, String englishPhrase, String translatedPhrase){
         database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(ALL_TRANSLATIONS_COLUMN_1, languageAbbr);
         contentValues.put(ALL_TRANSLATIONS_COLUMN_2, language);
         contentValues.put(ALL_TRANSLATIONS_COLUMN_3, englishPhrase);
         contentValues.put(ALL_TRANSLATIONS_COLUMN_4, translatedPhrase);
