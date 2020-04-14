@@ -4,25 +4,36 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.visal.phraze.R;
+import com.visal.phraze.SavedTranslationAdapter;
+import com.visal.phraze.Translation;
+import com.visal.phraze.helpers.DatabaseHelper;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SavedTranslationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SavedTranslationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class SavedTranslationFragment extends Fragment {
+
+    private DatabaseHelper db;
+    private View layoutView;
+    private RecyclerView savedTranslationsRecyclerView;
+    RecyclerView.Adapter savedTranslationsAdapter;
+    RecyclerView.LayoutManager savedTranslationManager;
+    ArrayList<Translation> allTranslations;
+    private static final String TAG = SavedTranslationFragment.class.getSimpleName();
+
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -33,18 +44,8 @@ public class SavedTranslationFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public SavedTranslationFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedTranslationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SavedTranslationFragment newInstance(String param1, String param2) {
         SavedTranslationFragment fragment = new SavedTranslationFragment();
         Bundle args = new Bundle();
@@ -66,16 +67,23 @@ public class SavedTranslationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved_translation, container, false);
+        layoutView = inflater.inflate(R.layout.fragment_saved_translation, container, false);
+
+        db = new DatabaseHelper(getActivity());
+        allTranslations = new ArrayList<>();
+        allTranslations = db.getAlltranslations();
+        Log.d(TAG, "onCreateView: the db data is " + allTranslations);
+
+        savedTranslationsRecyclerView = layoutView.findViewById(R.id.saved_translations_recyclerview);
+        savedTranslationsRecyclerView.setHasFixedSize(true);
+        savedTranslationManager = new LinearLayoutManager(getActivity());
+        savedTranslationsRecyclerView.setLayoutManager(savedTranslationManager);
+        savedTranslationsAdapter = new SavedTranslationAdapter(allTranslations);
+        savedTranslationsRecyclerView.setAdapter(savedTranslationsAdapter);
+
+        return layoutView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -94,16 +102,6 @@ public class SavedTranslationFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

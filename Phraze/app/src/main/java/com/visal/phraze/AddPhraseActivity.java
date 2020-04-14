@@ -53,7 +53,7 @@ public class AddPhraseActivity extends AppCompatActivity {
         cardViewText3 = findViewById(R.id.recently_added_phrase_three);
 
 //        getting data from the SQLite database
-        recentlyAdded = db.getLastAddedPhrases();
+//        recentlyAdded = db.getLastAddedPhrases();
         savedPhrases = db.getAllPhrases();
 //        setting recently added cards
 //        setRecentlyAddedCards(recentlyAdded);

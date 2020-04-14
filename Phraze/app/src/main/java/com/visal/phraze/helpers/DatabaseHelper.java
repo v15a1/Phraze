@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.StringRes;
+
 import com.visal.phraze.Language;
+import com.visal.phraze.Translation;
 
 import java.nio.Buffer;
 import java.util.ArrayList;
@@ -17,15 +20,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     //constant values of the database and table
-    private static final String DATABASE_NAME = "q.db";
+    private static final String DATABASE_NAME = "r.db";
     private static final String TABLE_NAME = "phrase_table";
     private static final String SUBSCRIBED_LANGUAGES = "subscribed_languages_table";
+    private static final String SELECTED_TRANSLATIONS = "all_translations_table";
     private static final String COLUMN_1 = "PHRASE_ID";
     private static final String COLUMN_2 = "PHRASE";
     private static final String SUBS_COLUMN_1 = "SUBS_ID";
     private static final String SUBS_COLUMN_2 = "SUBS_INDEX";
     private static final String SUBS_COLUMN_3 = "LANG_NAME";
     private static final String SUBS_COLUMN_4 = "LANG_ABBREVIATION";
+    private static final String ALL_TRANSLATIONS_COLUMN_1 = "TRANSLATION_ID";
+    private static final String ALL_TRANSLATIONS_COLUMN_2 = "LANG_ABBREVIATION";
+    private static final String ALL_TRANSLATIONS_COLUMN_3 = "ENGLISH_TRANSLATION";
+    private static final String ALL_TRANSLATIONS_COLUMN_4 = "TRANSLATION";
     private SQLiteDatabase database;
 
     public DatabaseHelper(Context context) {
@@ -36,11 +44,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME + " (PHRASE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PHRASE TEXT)");
         db.execSQL("create table IF NOT EXISTS " + SUBSCRIBED_LANGUAGES + " (LANGUAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT, SUBS_INDEX INTEGER, LANG_NAME TEXT, LANG_ABBREVIATION TEXT)");
+        db.execSQL("create table IF NOT EXISTS " + SELECTED_TRANSLATIONS + " (TRANSLATION_ID INTEGER PRIMARY KEY AUTOINCREMENT, LANG_ABBREVIATION TEXT, ENGLISH_TRANSLATION TEXT, TRANSLATION TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("create table IF NOT EXISTS " + SUBSCRIBED_LANGUAGES + " (SUBS_INDEX INTEGER PRIMARY KEY)");
+        db.execSQL("create table IF NOT EXISTS " + SELECTED_TRANSLATIONS + " (TRANSLATION_ID PRIMARY KEY AUTOINCREMENT, LANG_ABBREVIATION TEXT, ENGLISH_TRANSLATION TEXT, TRANSLATION TEXT)");
         onCreate(db);
     }
 
@@ -63,14 +72,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+
+    public boolean insertTranslations(String language, String englishPhrase, String translatedPhrase){
+        database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ALL_TRANSLATIONS_COLUMN_2, language);
+        contentValues.put(ALL_TRANSLATIONS_COLUMN_3, englishPhrase);
+        contentValues.put(ALL_TRANSLATIONS_COLUMN_4, translatedPhrase);
+        long result = database.insert(SELECTED_TRANSLATIONS, null, contentValues);
+        return  result != -1;
+    }
+
     //method to retrieve all values from the table
     public Cursor getAllPhraseData() {
         database = this.getReadableDatabase();
         return database.rawQuery("select * from " + TABLE_NAME, null);
     }
 
+    public ArrayList<Translation> getAlltranslations() {
+        ArrayList<Translation> translations = new ArrayList<>();
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery("select * from " + SELECTED_TRANSLATIONS, null);
+        while (cursor.moveToNext()) {
+            String language = cursor.getString(1);
+            String phrase = cursor.getString(2);
+            String translation = cursor.getString(3);
+            translations.add(new Translation(language, phrase, translation));
+        }
+        return translations;
+    }
+
     public void deleteLanguageSubscriptionTableData() {
         database.delete(SUBSCRIBED_LANGUAGES, null, null);
+    }
+
+    public void deleteTranslations(){
+        database.delete(SELECTED_TRANSLATIONS, null, null);
     }
 
     //method to update a phrase
