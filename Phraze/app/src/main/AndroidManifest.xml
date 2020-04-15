@@ -14,22 +14,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".fragments.TranslationActivity"></activity>
-        <activity android:name=".fragments.LiveTranslationFragment" />
-        <activity android:name=".TranslationTabView" />
-        <activity android:name=".TranslatePhraseActivity" />
-        <activity android:name=".LanguageSubscriptionActivity" />
-        <activity android:name=".AddPhraseActivity" />
-        <activity android:name=".EditPhrasesActivity" />
-        <activity android:name=".DisplayPhrasesActivity" />
-        <activity android:name=".SplashScreen">
+<!-- making the orientation portrait to prevent screen rotation-->
+        <activity
+            android:name=".fragments.TranslationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragments.LiveTranslationFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LanguageSubscriptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddPhraseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditPhrasesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DisplayPhrasesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

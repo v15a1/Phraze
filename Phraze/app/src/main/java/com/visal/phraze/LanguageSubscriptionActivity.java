@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.visal.phraze.helpers.AccessibilityHelper;
@@ -30,7 +30,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
     private RecyclerViewCheckBoxCheckListener listener = this;
     private static ArrayList<Integer> checkedCardIndexes = new ArrayList<>();
     private static ArrayList<Language> subscribedLanguages = new ArrayList<>();
-
+    private View layout;
     DatabaseHelper db;
 
     @Override
@@ -45,6 +45,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
 
         Log.d(TAG, "onCreate: checked are" + checkedCardIndexes);
         new LanguagesTask().execute(true);
+        layout = findViewById(R.id.language_subs_activity);
         progressView = findViewById(R.id.language_subscription_progressbar);
         subscriptionRecyclerView = findViewById(R.id.language_subscription_recyclerview);
         subscriptionRecyclerView.setHasFixedSize(true);
@@ -53,7 +54,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         subscriptionUpdateButton = findViewById(R.id.language_subscription_update_button);
 
         subscriptionUpdateButton.setEnabled(false);
-        subscriptionUpdateButton.setAlpha(0.5f);
+        subscriptionUpdateButton.setTextColor(getResources().getColor(R.color.darkGrey));
 
         subscriptionUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +65,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
                     int y = checkedCardIndexes.get(x);
                     Log.d(TAG, "onClick: inside loop");
                     boolean success = db.insertLanguageSubscriptions(y, languages.get(y).getName(), languages.get(y).getLanguage());
-                    Toast.makeText(LanguageSubscriptionActivity.this, "subs sent? " + success, Toast.LENGTH_SHORT).show();
+                    if (success){
+                        Snackbar.make(layout, "Successfully updated subscriptions", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Snackbar.make(layout, "Could NOT updated subscriptions", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -76,7 +81,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         checkedCardIndexes = arr;
     }
 
-    public static class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {
+    public class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {
         public AccessibilityHelper accessibilityHelper = new AccessibilityHelper();
 
         @Override
@@ -99,11 +104,8 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
             subscriptionRecyclerView.setAdapter(subscriptionAdapter);
             progressView.setVisibility(View.GONE);
             subscriptionUpdateButton.setEnabled(true);
-            subscriptionUpdateButton.setAlpha(1f);
-            //            //debugging loop
-//            for (int x = 0; x< languages.size(); x++){
-//                Log.d(TAG, "onCreate: lan abbs are " + languages.get(x).getLanguage());
-//            }
+            subscriptionUpdateButton.setTextColor(getResources().getColor(R.color.green));
+
         }
     }
 }

@@ -44,7 +44,7 @@ public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyc
         if (selectedCardIndex == position){
             holder.radioButton.setChecked(true);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#6A6A6A"));
-            holder.phraseTextview.setTextColor(Color.parseColor("#FFB800"));
+            holder.phraseTextview.setTextColor(Color.parseColor("#44DEA5"));
         }else{
             holder.radioButton.setChecked(false);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#ffffff"));

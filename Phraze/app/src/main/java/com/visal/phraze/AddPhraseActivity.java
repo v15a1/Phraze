@@ -1,7 +1,7 @@
 package com.visal.phraze;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -67,7 +67,6 @@ public class AddPhraseActivity extends AppCompatActivity {
                 if (!phrase.equals("") && !savedPhrases.contains(phrase.toUpperCase())) {
                     boolean isDataInserted = db.insertPhrase(phrase);
                     recentlyAdded = db.getLastAddedPhrases();
-//                    setRecentlyAddedCards(recentlyAdded);
                     Toast.makeText(addPhraseEdittext.getContext(), "Phrase successfully saved", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onClick: has the phrase been inserted? " + isDataInserted);
                 } else if (savedPhrases.contains(phrase.toUpperCase())) {

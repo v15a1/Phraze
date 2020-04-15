@@ -6,22 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragments.TranslationActivity"
     android:orientation="vertical">
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:background="@color/colorPrimaryDark"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
     <com.google.android.material.tabs.TabLayout
+        android:fontFamily="@font/khula_light"
+        android:textSize="@dimen/font_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/translation_tab_layout"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/ash"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:tabSelectedTextColor="@color/green"
+        app:tabIndicatorColor="@color/green"
+        />
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

@@ -5,15 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/default_layout_spacing"
+    android:theme="@style/AppTheme.ActionBar"
     tools:context=".AddPhraseActivity">
 
     <EditText
         android:id="@+id/add_phrase_edittext"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_view_height"
+        android:fontFamily="@font/khula_light"
         android:hint="@string/enter_a_phrase_to_save_edittext_hint"
-        android:textColor="@color/colorAccent"
         android:inputType="text"
+        android:textColor="@color/ash"
+        android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,14 +35,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_layout_spacing"
             android:layout_marginTop="@dimen/default_layout_spacing"
-            android:text="Recently added Phrases" />
+            android:text="Recently added Phrases"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"
+            android:textStyle="bold"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/recently_added_phrase_card_one"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_layout_spacing"
             android:layout_marginStart="@dimen/default_layout_spacing"
+            android:layout_marginTop="@dimen/default_layout_spacing"
             android:layout_marginEnd="@dimen/default_layout_spacing"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
@@ -50,16 +56,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_layout_spacing"
+                android:fontFamily="@font/khula_light"
                 android:text=""
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/ash"
+                android:textSize="@dimen/font_size" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/recently_added_phrase_card_two"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_layout_spacing"
             android:layout_marginStart="@dimen/default_layout_spacing"
+            android:layout_marginTop="@dimen/default_layout_spacing"
             android:layout_marginEnd="@dimen/default_layout_spacing"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@+id/add_phrase_edittext"
@@ -70,8 +78,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_layout_spacing"
+                android:fontFamily="@font/khula_light"
                 android:text=""
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/ash"
+                android:textSize="@dimen/font_size" />
         </androidx.cardview.widget.CardView>
 
 
@@ -89,8 +99,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_layout_spacing"
+                android:fontFamily="@font/khula_light"
                 android:text=""
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/ash"
+                android:textSize="@dimen/font_size" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
@@ -100,7 +112,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_expand_more_black_24dp"
+        android:fontFamily="@font/khula_light"
         android:text="@string/show_recent_button_title"
+        android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_view_holder" />
@@ -110,9 +124,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_view_height"
         android:background="@drawable/button_style"
+        android:fontFamily="@font/khula_light"
         android:text="@string/save_button_text"
-        android:textColor="@color/yellow"
-        android:textSize="18sp"
+        android:textColor="@color/green"
+        android:textSize="@dimen/font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

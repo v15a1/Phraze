@@ -36,7 +36,7 @@ public class AlertDialogComponent {
 
         //setting a customized alert title
         alertDialogBuilder
-                .setMessage("Do you want to delete the phrase \"" + phrases.get(position) + "\"")
+                .setMessage("Do you want to delete the phrase \"" + phrases.get(position).phrase + "\"")
                 .setCancelable(false)
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 

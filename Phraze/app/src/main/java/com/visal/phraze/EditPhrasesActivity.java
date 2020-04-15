@@ -25,7 +25,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
     RecyclerView.LayoutManager editPhraseLayoutManager;
     ArrayList<String> allPhrases;
     ArrayList<Phrase> phrases;
-    int selectedPhraseIndex;
+    int selectedPhraseIndex = -1;
     Button editPhraseButton;
     Button savePhraseButton;
     EditText phraseValue;
@@ -43,7 +43,10 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         editPhraseButton = findViewById(R.id.edit_phrase_button);
         savePhraseButton = findViewById(R.id.save_edited_phrase_button);
         phraseValue = findViewById(R.id.edit_phrase_edittext);
-        phraseValue.setEnabled(false);
+
+        savePhraseButton.setEnabled(false);
+        savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
+        phraseValue.setVisibility(View.GONE);
 
         //edit activity recycler view
         editPhraseRecyclerView = findViewById(R.id.edit_phrases_recycler_view);
@@ -58,8 +61,10 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onClick(View v) {
                 if (selectedPhraseIndex >=0){
-                    phraseValue.setEnabled(true);
-                    phraseValue.setHint(phrasesInDB.get(selectedPhraseIndex));
+                    phraseValue.setVisibility(View.VISIBLE);
+                    phraseValue.setHint(phrases.get(selectedPhraseIndex).phrase);
+                    savePhraseButton.setEnabled(true);
+                    savePhraseButton.setTextColor(getResources().getColor(R.color.green));
                 }
             }
         });

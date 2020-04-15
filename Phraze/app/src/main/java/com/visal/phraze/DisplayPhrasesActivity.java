@@ -68,6 +68,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                     int position = target.getAdapterPosition();
                     int phraseIdToDelete = phrases.get(position).id;
                    AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter);
+                   phraseAdapter.notifyDataSetChanged();
                 }
             });
             touchHelper.attachToRecyclerView(phraseRecyclerView);

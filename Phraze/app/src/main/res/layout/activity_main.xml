@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     tools:context=".MainActivity">
 
     <ImageView
@@ -13,19 +14,37 @@
         android:padding="100dp"
         android:scaleType="centerCrop"
         android:src="@drawable/phraze_logo"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/button_linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/show_all_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ic_expand_less_black_24dp"
+        android:drawableTint="@color/ash"
+        android:fontFamily="@font/khula_light"
+        android:text="@string/show_buttons"
+        android:textStyle="bold"
+        android:textColor="@color/ash"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintBottom_toTopOf="@+id/button_linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/button_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_layout_spacing"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="10dp">
+
 
         <Button
             android:id="@+id/add_phrase_activity_button"
@@ -34,7 +53,9 @@
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
             android:text="@string/add_phrase_button_text"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/green"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"/>
 
         <Button
             android:id="@+id/show_phrases_activity_button"
@@ -43,7 +64,9 @@
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
             android:text="@string/show_phrases_button_text"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/green"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"/>
 
         <Button
             android:id="@+id/edit_phrases_activity_button"
@@ -52,7 +75,9 @@
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
             android:text="@string/edit_phrases_button_text"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/green"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"/>
 
         <Button
             android:id="@+id/language_subscription_activity_button"
@@ -61,7 +86,9 @@
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
             android:text="@string/language_subscription_button_text"
-            android:textColor="@color/yellow"/>
+            android:textColor="@color/green"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"/>
 
         <Button
             android:id="@+id/translate_activity_button"
@@ -70,6 +97,8 @@
             android:layout_marginTop="@dimen/default_layout_spacing"
             android:background="@drawable/button_style"
             android:text="@string/translate_button_text"
-            android:textColor="@color/yellow"/>
+            android:textColor="@color/green"
+            android:fontFamily="@font/khula_light"
+            android:textSize="@dimen/font_size"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

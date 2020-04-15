@@ -25,5 +25,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="live_translation_fragment">LIVE TRANSLATION</string>
     <string name="saved_translation_fragment">SAVED TRANSLATION</string>
+    <string name="show_buttons">Show Buttons</string>
 
 </resources>

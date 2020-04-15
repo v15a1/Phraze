@@ -44,13 +44,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
+            android:fontFamily="@font/khula_light"
             android:paddingStart="10dp"
             android:paddingTop="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="20dp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="@dimen/font_size"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toTopOf="@+id/subscribed_language_spinner"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +71,7 @@
                 android:layout_margin="@dimen/default_layout_spacing"
                 android:background="@color/colorAccent"
                 android:src="@drawable/ic_play_circle_filled_black_24dp"
-                android:tint="@color/yellow" />
+                android:tint="@color/green" />
 
             <ProgressBar
                 android:id="@+id/voice_progress"
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/yellow" />
+                android:indeterminateTint="@color/green" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -89,7 +90,9 @@
         android:layout_margin="@dimen/default_layout_spacing"
         app:layout_constraintBottom_toTopOf="@+id/translate_phrase_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/khula_light"
+        android:textSize="@dimen/font_size"/>
 
     <Button
         android:id="@+id/translate_phrase_button"
@@ -98,9 +101,11 @@
         android:layout_margin="@dimen/default_layout_spacing"
         android:background="@drawable/button_style"
         android:text="@string/translate_text"
-        android:textColor="@color/yellow"
+        android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/khula_light"
+        android:textSize="@dimen/font_size"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

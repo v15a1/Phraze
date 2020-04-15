@@ -110,8 +110,11 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         abbreviationList = new ArrayList();
 
         subscribedLanguages = db.getAllSubscriptions();
-        allPhrases = db.getAllPhrases();
         phrases = db.getAllPhraseData();
+        for (Phrase x : phrases){
+            allPhrases.add(x.getPhrase());
+        }
+        Log.d(TAG, "onCreateView: " + allPhrases);
 
         subscribedLanguagesNames.add("Select a language");  //setting initial value for the spinner
         for (Language x : subscribedLanguages) {
@@ -290,7 +293,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             allTranslatedPhrases.addAll(s);
             Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
             for (int x = 0; x < allTranslatedPhrases.size(); x++) {
-                boolean successfulPersistence = db.insertTranslations(abbreviation,selectedSpinnerValue, allPhrases.get(x), allTranslatedPhrases.get(x));
+                boolean successfulPersistence = db.insertTranslations(abbreviation,selectedSpinnerValue, phrases.get(x).getPhrase(), allTranslatedPhrases.get(x));
                 Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
             }
             Log.d(TAG, "onPostExecute: " + db.getAlltranslations());
