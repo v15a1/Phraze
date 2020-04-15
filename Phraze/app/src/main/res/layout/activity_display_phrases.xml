@@ -23,7 +23,8 @@
             android:layout_weight="3"
             android:fontFamily="@font/khula_light"
             android:inputType="text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:hint="@string/enter_a_phrase_to_search"/>
 
         <Button
             android:id="@+id/display_phrases_clear_button"

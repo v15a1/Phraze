@@ -1,6 +1,5 @@
 package com.visal.phraze;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.Drawable;
@@ -66,6 +65,7 @@ public class AddPhraseActivity extends AppCompatActivity {
                 //if the text field is not empty, the data is stored in the database
                 if (!phrase.equals("") && !savedPhrases.contains(phrase.toUpperCase())) {
                     boolean isDataInserted = db.insertPhrase(phrase);
+                    savedPhrases.add(phrase.toUpperCase());
                     recentlyAdded = db.getLastAddedPhrases();
                     Toast.makeText(addPhraseEdittext.getContext(), "Phrase successfully saved", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onClick: has the phrase been inserted? " + isDataInserted);

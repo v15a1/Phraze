@@ -127,7 +127,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateData(int phraseId, String phrase) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_1, phraseId);
         contentValues.put(COLUMN_2, phrase);
         long updated = db.update(PHRASE_TABLE, contentValues, "PHRASE_ID=" + phraseId, null);
         return updated != -1;

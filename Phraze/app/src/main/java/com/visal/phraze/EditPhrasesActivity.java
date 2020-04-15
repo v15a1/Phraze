@@ -1,6 +1,7 @@
 package com.visal.phraze;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.visal.phraze.helpers.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -28,8 +32,12 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
     int selectedPhraseIndex = -1;
     Button editPhraseButton;
     Button savePhraseButton;
+    ImageButton cancelEditButton;
     EditText phraseValue;
     String newPhraseText;
+    ConstraintLayout layout;
+    LinearLayout editTextLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +50,17 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
 
         editPhraseButton = findViewById(R.id.edit_phrase_button);
         savePhraseButton = findViewById(R.id.save_edited_phrase_button);
+
+        cancelEditButton = findViewById(R.id.cancel_edit);
         phraseValue = findViewById(R.id.edit_phrase_edittext);
+        layout = findViewById(R.id.edit_phrase_layout);
+        editTextLayout = findViewById(R.id.edit_phrase_edittext_layout);
 
         savePhraseButton.setEnabled(false);
         savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
-        phraseValue.setVisibility(View.GONE);
+        editTextLayout.setVisibility(View.GONE);
+        editPhraseButton.setEnabled(false);
+        editPhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
 
         //edit activity recycler view
         editPhraseRecyclerView = findViewById(R.id.edit_phrases_recycler_view);
@@ -61,11 +75,20 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onClick(View v) {
                 if (selectedPhraseIndex >=0){
-                    phraseValue.setVisibility(View.VISIBLE);
+                    editTextLayout.setVisibility(View.VISIBLE);
                     phraseValue.setHint(phrases.get(selectedPhraseIndex).phrase);
                     savePhraseButton.setEnabled(true);
-                    savePhraseButton.setTextColor(getResources().getColor(R.color.green));
+                    savePhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
                 }
+            }
+        });
+
+        cancelEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextLayout.setVisibility(View.GONE);
+                savePhraseButton.setEnabled(false);
+                savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
             }
         });
 
@@ -75,15 +98,20 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onClick(View v) {
                 newPhraseText = phraseValue.getText().toString();
-                allPhrases.set(selectedPhraseIndex, newPhraseText);
+                phrases.get(selectedPhraseIndex).setPhrase(newPhraseText);
+                int updateId = phrases.get(selectedPhraseIndex).id;
                 editPhraseAdapter.notifyDataSetChanged();
-                boolean updated = db.updateData(selectedPhraseIndex + 1, newPhraseText );
+                boolean updated = db.updateData(updateId , newPhraseText );
+                Log.d(TAG, "onClick: updated " + updated );
                 //log statements to check success of the updating query
                 if (updated){
-                    Log.d(TAG, "onClick: Successfully updated fields");
+                    Snackbar.make(layout, "Successfully updated.", Snackbar.LENGTH_SHORT);
                 }else{
-                    Log.d(TAG, "onClick: unsuccessfull update of fields");
+                    Snackbar.make(layout, "Could not Update field", Snackbar.LENGTH_SHORT);
                 }
+                editTextLayout.setVisibility(View.GONE);
+                savePhraseButton.setEnabled(false);
+                savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
             }
         });
     }
@@ -92,6 +120,10 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
     @Override
     public void recyclerViewRadioClick(View v, int position) {
         selectedPhraseIndex = position;
-        Log.d(TAG, "recyclerViewRadioClick: position is " + position);
+        Log.d(TAG, "recyclerViewRadioClick: position is " + selectedPhraseIndex);
+        if (position >=0){
+            editPhraseButton.setEnabled(true);
+            editPhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
     }
 }

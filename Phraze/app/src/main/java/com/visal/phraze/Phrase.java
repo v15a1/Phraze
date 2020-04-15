@@ -17,8 +17,8 @@ public class Phrase {
         return phrase;
     }
 
-    public String getDateAdded() {
-        return dateAdded;
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
     }
 
     @Override

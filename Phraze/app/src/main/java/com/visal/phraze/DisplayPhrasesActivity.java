@@ -45,6 +45,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         searchPhrasesTextField = findViewById(R.id.display_phrases_searchbar);
         allPhrases = phrasesInDB;
         phrases = db.getAllPhraseData();
+        ArrayList<Phrase> dummyPhrases = new ArrayList<>(phrases);
         //accessing the Database
         //initializing RecyclerView
         phraseRecyclerView = findViewById(R.id.phrases_recyclerview);
@@ -82,6 +83,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchValue = s.toString().toUpperCase();
+                phrases = db.getAllPhraseData();
                 phrases = searchForPhrases(searchValue);
                 //updating the recycler view
                 Log.d(TAG, "onTextChanged: invoked");
@@ -106,7 +108,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
     private ArrayList<Phrase> searchForPhrases(String value) {
         ArrayList<Phrase> results = new ArrayList<>();
         for (Phrase x : phrases) {
-            if (x.phrase.contains(value)) {
+            if (x.phrase.toUpperCase().contains(value)) {
                 results.add(x);
             }
         }

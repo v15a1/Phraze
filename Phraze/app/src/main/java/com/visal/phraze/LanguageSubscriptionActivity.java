@@ -16,6 +16,7 @@ import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.visal.phraze.helpers.AccessibilityHelper;
 import com.visal.phraze.helpers.DatabaseHelper;
+import com.visal.phraze.helpers.NetworkAccessHelper;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
     private static ArrayList<Language> subscribedLanguages = new ArrayList<>();
     private View layout;
     DatabaseHelper db;
+    NetworkAccessHelper networkAccessHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,13 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
             checkedCardIndexes.add(x.getIndex());
         }
 
-        Log.d(TAG, "onCreate: checked are" + checkedCardIndexes);
+        networkAccessHelper = new NetworkAccessHelper(this);
+        if (networkAccessHelper.isNetworkAvailable()){
+        //executing task to retrieve language list
         new LanguagesTask().execute(true);
+        }else{
+            AlertDialogComponent.basicAlert(this, "Network error. Please check if you are connected to the internet");
+        }
         layout = findViewById(R.id.language_subs_activity);
         progressView = findViewById(R.id.language_subscription_progressbar);
         subscriptionRecyclerView = findViewById(R.id.language_subscription_recyclerview);

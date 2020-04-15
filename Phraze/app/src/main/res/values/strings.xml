@@ -26,5 +26,6 @@
     <string name="live_translation_fragment">LIVE TRANSLATION</string>
     <string name="saved_translation_fragment">SAVED TRANSLATION</string>
     <string name="show_buttons">Show Buttons</string>
+    <string name="enter_a_phrase_to_search">Enter a phrase to search</string>
 
 </resources>
