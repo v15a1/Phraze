@@ -5,17 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import androidx.annotation.StringRes;
 
 import com.visal.phraze.Language;
 import com.visal.phraze.Phrase;
 import com.visal.phraze.Translation;
 
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Date;
 
 //http://www.codebind.com/android-tutorials-and-examples/android-sqlite-tutorial-example/
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -23,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     //constant values of the database and table
     private static final String DATABASE_NAME = "s.db";
-    private static final String TABLE_NAME = "phrase_table";
+    private static final String PHRASE_TABLE = "phrase_table";
     private static final String SUBSCRIBED_LANGUAGES = "subscribed_languages_table";
     private static final String SELECTED_TRANSLATIONS = "all_translations_table";
     private static final String COLUMN_1 = "PHRASE_ID";
@@ -45,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME + " (PHRASE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PHRASE TEXT, DATE_ADDED DATETIME)");
+        db.execSQL("create table IF NOT EXISTS " + PHRASE_TABLE + " (PHRASE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PHRASE TEXT, DATE_ADDED DATETIME)");
         db.execSQL("create table IF NOT EXISTS " + SUBSCRIBED_LANGUAGES + " (LANGUAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT, SUBS_INDEX INTEGER, LANG_NAME TEXT, LANG_ABBREVIATION TEXT)");
         db.execSQL("create table IF NOT EXISTS " + SELECTED_TRANSLATIONS + " (TRANSLATION_ID INTEGER PRIMARY KEY AUTOINCREMENT, LANG_ABBREVIATION TEXT, LANG TEXT, ENGLISH_TRANSLATION TEXT, TRANSLATION TEXT)");
     }
@@ -62,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_2, phrase);
         contentValues.put(COLUMN_3, DateTime.getDateTime());
-        long result = database.insert(TABLE_NAME, null, contentValues); //inserting values into the db
+        long result = database.insert(PHRASE_TABLE, null, contentValues); //inserting values into the db
         return result != -1;    //returning a boolean to check if the data has been successfully stored
     }
 
@@ -92,11 +87,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Phrase> getAllPhraseData() {
         ArrayList<Phrase> phrases = new ArrayList<>();
         database = this.getReadableDatabase();
-        Cursor cursor =  database.rawQuery("select * from " + TABLE_NAME, null);
+        Cursor cursor =  database.rawQuery("select * from " + PHRASE_TABLE, null);
         while (cursor.moveToNext()){
+            int id = cursor.getInt(0);
             String phrase = cursor.getString(1);
             String dateAdded = cursor.getString(2);
-            phrases.add(new Phrase(phrase, dateAdded));
+            phrases.add(new Phrase(id,phrase, dateAdded));
         }
         return phrases;
     }
@@ -106,9 +102,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery("select * from " + SELECTED_TRANSLATIONS, null);
         while (cursor.moveToNext()) {
-            String language = cursor.getString(1);
-            String phrase = cursor.getString(2);
-            String translation = cursor.getString(3);
+            String language = cursor.getString(2);
+            String phrase = cursor.getString(3);
+            String translation = cursor.getString(4);
             translations.add(new Translation(language, phrase, translation));
         }
         return translations;
@@ -116,6 +112,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteLanguageSubscriptionTableData() {
         database.delete(SUBSCRIBED_LANGUAGES, null, null);
+    }
+
+    public boolean deletePhrase(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(PHRASE_TABLE, "PHRASE_ID=" + id, null ) > 0;
     }
 
     public void deleteTranslations(){
@@ -128,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_1, phraseId);
         contentValues.put(COLUMN_2, phrase);
-        long updated = db.update(TABLE_NAME, contentValues, "PHRASE_ID=" + phraseId, null);
+        long updated = db.update(PHRASE_TABLE, contentValues, "PHRASE_ID=" + phraseId, null);
         return updated != -1;
     }
 
@@ -136,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList getLastAddedPhrases() {
         ArrayList<String> recentlyAddedPhrases = new ArrayList<>();
         database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + TABLE_NAME + " ORDER BY " + COLUMN_1 + " DESC LIMIT 3", null);
+        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + PHRASE_TABLE + " ORDER BY " + COLUMN_1 + " DESC LIMIT 3", null);
         while (cursor.moveToNext()) {
             recentlyAddedPhrases.add(cursor.getString(cursor.getColumnIndex(COLUMN_2)));
         }
@@ -146,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList getAllPhrases() {
         ArrayList<String> allPhrases = new ArrayList<>();
         database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + TABLE_NAME, null);
+        Cursor cursor = database.rawQuery("select " + COLUMN_2 + " from " + PHRASE_TABLE, null);
         while (cursor.moveToNext()) {
             allPhrases.add(cursor.getString(cursor.getColumnIndex(COLUMN_2)).toUpperCase());
         }

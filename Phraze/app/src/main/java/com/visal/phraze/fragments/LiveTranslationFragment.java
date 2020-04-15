@@ -293,8 +293,8 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                 boolean successfulPersistence = db.insertTranslations(abbreviation,selectedSpinnerValue, allPhrases.get(x), allTranslatedPhrases.get(x));
                 Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
             }
+            Log.d(TAG, "onPostExecute: " + db.getAlltranslations());
             progressLayout.setVisibility(View.GONE);
-            new SavedTranslationFragment().refreshAdapter();
         }
     }
 }

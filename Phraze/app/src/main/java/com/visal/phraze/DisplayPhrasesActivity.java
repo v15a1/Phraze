@@ -23,7 +23,6 @@ import java.util.List;
 
 public class DisplayPhrasesActivity extends AppCompatActivity {
     private static final String TAG = DisplayPhrasesActivity.class.getSimpleName();
-    Button displayPhrasesButton;
     Button clearSearchTextFieldButton;
     DatabaseHelper db;
     private ArrayList<Phrase> phrases;
@@ -41,8 +40,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_phrases);
         db = new DatabaseHelper(this);
         phrasesInDB = db.getAllPhrases();
-        sortPhrasesAlphabetically(phrasesInDB);
-        displayPhrasesButton = findViewById(R.id.display_phrases_button);
+//        sortPhrasesAlphabetically(phrasesInDB);
         clearSearchTextFieldButton = findViewById(R.id.display_phrases_clear_button);
         searchPhrasesTextField = findViewById(R.id.display_phrases_searchbar);
         allPhrases = phrasesInDB;
@@ -57,8 +55,8 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         phraseRecyclerView.setAdapter(phraseAdapter);
 
         //implementing swipe to delete functionality
-        if (searchValue.equals("")){
-            ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        if (searchValue.equals("")) {
+            ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                     return false;
@@ -68,9 +66,8 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                     int position = target.getAdapterPosition();
-                    Log.d(TAG, "onSwiped: The node to delete is " + position);
-                    phrasesInDB.remove(position);
-                    phraseAdapter.notifyDataSetChanged();
+                    int phraseIdToDelete = phrases.get(position).id;
+                   AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter);
                 }
             });
             touchHelper.attachToRecyclerView(phraseRecyclerView);
@@ -84,7 +81,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchValue = s.toString().toUpperCase();
-                allPhrases = searchForPhrases(searchValue);
+                phrases = searchForPhrases(searchValue);
                 //updating the recycler view
                 Log.d(TAG, "onTextChanged: invoked");
                 phraseAdapter = new DisplayPhrasesAdapter(phrases);
@@ -102,34 +99,21 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 searchPhrasesTextField.setText("");
             }
         });
-
-        List<CardDetails> cardDetailsList = new ArrayList<>();
-        for (int i = 0; i < phrasesInDB.size(); i++) {
-            cardDetailsList.add(new CardDetails("a", i));
-        }
-
-        displayPhrasesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phrases = db.getAllPhraseData();
-
-            }
-        });
     }
 
     //method to search for phrases
-    private ArrayList<String> searchForPhrases(String value) {
-        ArrayList<String> results = new ArrayList<>();
-        for (String x : phrasesInDB) {
-            if (x.contains(value)) {
+    private ArrayList<Phrase> searchForPhrases(String value) {
+        ArrayList<Phrase> results = new ArrayList<>();
+        for (Phrase x : phrases) {
+            if (x.phrase.contains(value)) {
                 results.add(x);
             }
         }
-        sortPhrasesAlphabetically(results);
+//        sortPhrasesAlphabetically(results);
         return results;
     }
 
-    private void sortPhrasesAlphabetically(ArrayList<String> phrases) {
-        Collections.sort(phrases);
-    }
+//    private void sortPhrasesAlphabetically(ArrayList<Phrase> phrases) {
+//        Collections.sort(phrases);
+//    }
 }
