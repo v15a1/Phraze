@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Phraze</string>
     <string name="save_button_text">S A V E</string>
-    <string name="add_phrase_button_text">ADD PHRASE</string>
+    <string name="add_phrase_button_text">ADD PHRASES</string>
     <string name="show_phrases_button_text">DISPLAY PHRASES</string>
     <string name="recently_added_phrase_card_title">RECENTLY ADDED PHRASE</string>
     <string name="enter_a_phrase_to_save_edittext_hint">Enter a phrase to save</string>
