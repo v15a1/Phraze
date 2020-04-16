@@ -1,4 +1,4 @@
-package com.visal.phraze.fragments;
+package com.visal.phraze;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -8,6 +8,9 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.visal.phraze.R;
+import com.visal.phraze.fragments.LiveTranslationFragment;
+import com.visal.phraze.fragments.PagerAdapter;
+import com.visal.phraze.fragments.SavedTranslationFragment;
 
 public class TranslationActivity extends AppCompatActivity implements LiveTranslationFragment.OnFragmentInteractionListener, SavedTranslationFragment.OnFragmentInteractionListener, LiveTranslationFragment.RefreshTranslations{
 

@@ -277,52 +277,48 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         @SafeVarargs
         @Override
         protected final Hashtable<ArrayList<String>, String> doInBackground(ArrayList<String>... strings) {
+            Hashtable<ArrayList<String>, String> allTranslations = new Hashtable<>();
+            Log.d(TAG, "doInBackground: 0" + strings[0]);
+            Log.d(TAG, "doInBackground: 1" + strings[1]);
             try {
-                Hashtable<ArrayList<String>, String> allTranslations = new Hashtable<>();
-                for (int x = 0; x < strings[0].size(); x++) {
-                    for (int y = 0; y < strings[1].size(); y++) {
+                for (int x = 0; x < strings[1].size(); x++) {
+                    for (int y = 0; y < strings[0].size(); y++) {
                         TranslateOptions translateOptions = new TranslateOptions.Builder()
-                                .addText(strings[0].get(x))
+                                .addText(strings[0].get(y))
                                 .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
-                                .target(strings[1].get(y))
+                                .target(strings[1].get(x))
                                 .build();
 
                         TranslationResult result = accessibilityHelper.getService().translate(translateOptions).execute().getResult();
                         String res = result.getTranslations().get(0).getTranslation();
                         ArrayList<String> translationResult = new ArrayList<>();
                         translationResult.add(res);
-                        translationResult.add(strings[0].get(x));
-                        allTranslations.put(translationResult, strings[1].get(y));
+                        translationResult.add(strings[0].get(y));
+                        allTranslations.put(translationResult, strings[1].get(x));
+                        Log.d(TAG, "doInBackground: all translations " + res + ", " + strings[0].get(y));
                     }
                 }
                 return allTranslations;
             } catch (Exception e) {
-                return null;
+                return allTranslations;
             }
         }
 
         @Override
         protected void onPostExecute(Hashtable<ArrayList<String>, String> s) {
-            if (s != null) {
+            if (s.size()> 0) {
                 allTranslatedPhrases.putAll(s);
                 Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
                 for (Map.Entry<ArrayList<String>, String> entry : allTranslatedPhrases.entrySet()) {
-                    for (int y = 0; y < subscribedLanguages.size(); y++) {
                         String abbr = entry.getValue();
                         String translation = entry.getKey().get(0);
                         String englishPhrase = entry.getKey().get(1);
                         String language = "";
-                        for (Language x : subscribedLanguages) {
-                            if (x.getAbbreviation().equals(abbr)) {
-                                language = x.getName();
-                            }
-                        }
                         boolean successfulPersistence = db.insertTranslations(abbr, language, englishPhrase, translation);
                         Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
-                    }
                 }
             } else {
-                AlertDialogComponent.basicAlert(context, "Could not translate all the phrases to " + selectedSpinnerValue);
+                AlertDialogComponent.basicAlert(context, "Could not translate all the phrases. Check the languages as some ma");
             }
             progressLayout.setVisibility(View.GONE);
         }

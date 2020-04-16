@@ -75,7 +75,11 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onClick(View v) {
                 if (selectedPhraseIndex >=0){
+                    editTextLayout.setAlpha(0f);
                     editTextLayout.setVisibility(View.VISIBLE);
+                    editTextLayout.animate()
+                            .alpha(1f)
+                            .setDuration(300);
                     phraseValue.setHint(phrases.get(selectedPhraseIndex).phrase);
                     savePhraseButton.setEnabled(true);
                     savePhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -86,6 +90,9 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         cancelEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editTextLayout.animate()
+                        .alpha(0f)
+                        .setDuration(300);
                 editTextLayout.setVisibility(View.GONE);
                 savePhraseButton.setEnabled(false);
                 savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));

@@ -16,7 +16,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 <!-- making the orientation portrait to prevent screen rotation-->
         <activity
-            android:name=".fragments.TranslationActivity"
+            android:name=".TranslationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".fragments.LiveTranslationFragment"

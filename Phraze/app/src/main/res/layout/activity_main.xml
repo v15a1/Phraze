@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:animateLayoutChanges="true"
+    >
 
     <ImageView
         android:id="@+id/imageView"

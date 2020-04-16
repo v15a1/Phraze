@@ -84,12 +84,19 @@ public class AddPhraseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isRecentlyAddedDisplayed) {
+                    cardViewHolder.setVisibility(View.VISIBLE);
+                    cardViewHolder.animate()
+                            .alpha(0f)
+                            .setDuration(300);
                     cardViewHolder.setVisibility(View.GONE);
                     toggleRecentlyAddedButton.setCompoundDrawablesWithIntrinsicBounds(expandArrow, null, null, null);
                     toggleRecentlyAddedButton.setText("SHOW RECENTLY ADDED");
                     isRecentlyAddedDisplayed = false;
                 } else {
                     cardViewHolder.setVisibility(View.VISIBLE);
+                    cardViewHolder.animate()
+                            .alpha(1f)
+                            .setDuration(300);
                     toggleRecentlyAddedButton.setCompoundDrawablesWithIntrinsicBounds(collapeArrow, null, null, null);
                     toggleRecentlyAddedButton.setText("HIDE RECENTLY ADDED");
                     isRecentlyAddedDisplayed = true;
