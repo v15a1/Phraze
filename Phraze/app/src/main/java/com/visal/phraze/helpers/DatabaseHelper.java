@@ -102,10 +102,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery("select * from " + SELECTED_TRANSLATIONS, null);
         while (cursor.moveToNext()) {
-            String language = cursor.getString(2);
+            String language = cursor.getString(1);
+            String abbreviation = cursor.getString(2);
             String phrase = cursor.getString(3);
             String translation = cursor.getString(4);
-            translations.add(new Translation(language, phrase, translation));
+            translations.add(new Translation(abbreviation,language, phrase, translation));
         }
         return translations;
     }

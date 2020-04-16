@@ -48,6 +48,8 @@ import com.visal.phraze.helpers.SpeechTask;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -57,7 +59,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     private View layoutView;
     private Spinner languageSpinner;
     private static DatabaseHelper db;
-    private ArrayList<Language> subscribedLanguages;
+    private static ArrayList<Language> subscribedLanguages;
     private ArrayList<String> subscribedLanguagesNames;
     private static ArrayList<String> allPhrases;
     private static ArrayList<Phrase> phrases;
@@ -73,7 +75,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     private ProgressBar voiceProgress;
     private int selectedPhraseIndex;
     private static String abbreviation = "";
-    private static ArrayList<String> allTranslatedPhrases;
+    private static Hashtable<ArrayList<String>, String> allTranslatedPhrases;
     private static String selectedSpinnerValue;
     private ArrayList<String> abbreviationList;
     OnFragmentInteractionListener mListener;
@@ -108,7 +110,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         subscribedLanguages = new ArrayList<>();
         subscribedLanguagesNames = new ArrayList<>();
         allPhrases = new ArrayList<>();
-        allTranslatedPhrases = new ArrayList<>();
+        allTranslatedPhrases = new Hashtable<>();
         abbreviationList = new ArrayList();
 
         subscribedLanguages = db.getAllSubscriptions();
@@ -120,6 +122,9 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         subscribedLanguagesNames.add("Select a language");  //setting initial value for the spinner
         for (Language x : subscribedLanguages) {
             subscribedLanguagesNames.add(x.getName());
+        }
+        for (Language x : subscribedLanguages) {
+            abbreviationList.add(x.getAbbreviation());
         }
 
         translationPhraseRecyclerView.setHasFixedSize(true);
@@ -140,7 +145,6 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                 for (Language x : subscribedLanguages) {
                     if (x.getName().equals(selectedSpinnerValue)) {
                         abbreviation = x.getAbbreviation();
-                        abbreviationList.add(abbreviation);
                     }
                 }
             }
@@ -168,10 +172,9 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             @Override
             public void onClick(View v) {
                 db.deleteTranslations();
-                if (!selectedSpinnerValue.equals("Select a language")) {
-                    translationPhraseRecyclerView.setEnabled(false);
-                    new TranslateAllPhrasesTask(getActivity()).execute(allPhrases, abbreviationList);
-                }
+                translationPhraseRecyclerView.setEnabled(false);
+                Log.d(TAG, "onClick: abbreviations are " + abbreviationList);
+                new TranslateAllPhrasesTask(getActivity()).execute(allPhrases, abbreviationList);
             }
         });
 
@@ -218,6 +221,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     public static final class TranslationTask extends AsyncTask<String, Void, String> {
         public AccessibilityHelper accessibilityHelper = new AccessibilityHelper();
         private Context context;
+
         @Override
         protected void onPreExecute() {
             progressLayout.setVisibility(View.VISIBLE);
@@ -237,11 +241,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                         .build();
 
                 TranslationResult result = accessibilityHelper.getService().translate(translateOptions).execute().getResult();
-                String res = result.getTranslations().get(0).getTranslation();
-                if (!allTranslatedPhrases.contains(res)) {
-                    allTranslatedPhrases.add(res);
-                }
-                return res;
+                return result.getTranslations().get(0).getTranslation();
             } catch (Exception e) {
                 return "";
             }
@@ -261,7 +261,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         }
     }
 
-    public static final class TranslateAllPhrasesTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+    public static final class TranslateAllPhrasesTask extends AsyncTask<ArrayList<String>, Void, Hashtable<ArrayList<String>, String>> {
         public AccessibilityHelper accessibilityHelper = new AccessibilityHelper();
         private Context context;
 
@@ -276,19 +276,24 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
 
         @SafeVarargs
         @Override
-        protected final ArrayList<String> doInBackground(ArrayList<String>... strings) {
+        protected final Hashtable<ArrayList<String>, String> doInBackground(ArrayList<String>... strings) {
             try {
-                ArrayList<String> allTranslations = new ArrayList<>();
+                Hashtable<ArrayList<String>, String> allTranslations = new Hashtable<>();
                 for (int x = 0; x < strings[0].size(); x++) {
-                    TranslateOptions translateOptions = new TranslateOptions.Builder()
-                            .addText(strings[0].get(x))
-                            .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
-                            .target(strings[1].get(0))
-                            .build();
+                    for (int y = 0; y < strings[1].size(); y++) {
+                        TranslateOptions translateOptions = new TranslateOptions.Builder()
+                                .addText(strings[0].get(x))
+                                .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
+                                .target(strings[1].get(y))
+                                .build();
 
-                    TranslationResult result = accessibilityHelper.getService().translate(translateOptions).execute().getResult();
-                    String res = result.getTranslations().get(0).getTranslation();
-                    allTranslations.add(res);
+                        TranslationResult result = accessibilityHelper.getService().translate(translateOptions).execute().getResult();
+                        String res = result.getTranslations().get(0).getTranslation();
+                        ArrayList<String> translationResult = new ArrayList<>();
+                        translationResult.add(res);
+                        translationResult.add(strings[0].get(x));
+                        allTranslations.put(translationResult, strings[1].get(y));
+                    }
                 }
                 return allTranslations;
             } catch (Exception e) {
@@ -297,13 +302,24 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> s) {
+        protected void onPostExecute(Hashtable<ArrayList<String>, String> s) {
             if (s != null) {
-                allTranslatedPhrases.addAll(s);
+                allTranslatedPhrases.putAll(s);
                 Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
-                for (int x = 0; x < allTranslatedPhrases.size(); x++) {
-                    boolean successfulPersistence = db.insertTranslations(abbreviation, selectedSpinnerValue, phrases.get(x).getPhrase(), allTranslatedPhrases.get(x));
-                    Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
+                for (Map.Entry<ArrayList<String>, String> entry : allTranslatedPhrases.entrySet()) {
+                    for (int y = 0; y < subscribedLanguages.size(); y++) {
+                        String abbr = entry.getValue();
+                        String translation = entry.getKey().get(0);
+                        String englishPhrase = entry.getKey().get(1);
+                        String language = "";
+                        for (Language x : subscribedLanguages) {
+                            if (x.getAbbreviation().equals(abbr)) {
+                                language = x.getName();
+                            }
+                        }
+                        boolean successfulPersistence = db.insertTranslations(abbr, language, englishPhrase, translation);
+                        Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
+                    }
                 }
             } else {
                 AlertDialogComponent.basicAlert(context, "Could not translate all the phrases to " + selectedSpinnerValue);

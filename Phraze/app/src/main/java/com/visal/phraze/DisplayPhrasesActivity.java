@@ -19,6 +19,7 @@ import com.visal.phraze.helpers.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DisplayPhrasesActivity extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         searchPhrasesTextField = findViewById(R.id.display_phrases_searchbar);
         allPhrases = phrasesInDB;
         phrases = db.getAllPhraseData();
-        ArrayList<Phrase> dummyPhrases = new ArrayList<>(phrases);
+        Collections.sort(phrases, new SortAlphabetically());
         //accessing the Database
         //initializing RecyclerView
         phraseRecyclerView = findViewById(R.id.phrases_recyclerview);
@@ -68,8 +69,8 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                     int position = target.getAdapterPosition();
                     int phraseIdToDelete = phrases.get(position).id;
-                   AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter);
-                   phraseAdapter.notifyDataSetChanged();
+                    AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter);
+                    phraseAdapter.notifyDataSetChanged();
                 }
             });
             touchHelper.attachToRecyclerView(phraseRecyclerView);
@@ -112,11 +113,13 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 results.add(x);
             }
         }
-//        sortPhrasesAlphabetically(results);
+        Collections.sort(phrases, new SortAlphabetically());
         return results;
     }
 
-//    private void sortPhrasesAlphabetically(ArrayList<Phrase> phrases) {
-//        Collections.sort(phrases);
-//    }
+    class SortAlphabetically implements Comparator<Phrase> {
+        public int compare(Phrase a, Phrase b) {
+            return a.phrase.compareTo(b.phrase);
+        }
+    }
 }

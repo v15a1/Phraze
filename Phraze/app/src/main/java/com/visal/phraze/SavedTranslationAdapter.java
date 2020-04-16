@@ -32,7 +32,7 @@ public class SavedTranslationAdapter extends RecyclerView.Adapter<SavedTranslati
         this.translations = translations;
         this.context = context;
         this.networkAccessHelper = new NetworkAccessHelper(context);
-        Log.d(TAG, "SavedTranslationAdapter: " + this.translations);
+//        Log.d(TAG, "SavedTranslationAdapter: " + this.translations);
     }
 
     @NonNull

@@ -2,7 +2,7 @@
     <string name="app_name">Phraze</string>
     <string name="save_button_text">S A V E</string>
     <string name="add_phrase_button_text">ADD PHRASE</string>
-    <string name="show_phrases_button_text">SHOW PHRASES</string>
+    <string name="show_phrases_button_text">DISPLAY PHRASES</string>
     <string name="recently_added_phrase_card_title">RECENTLY ADDED PHRASE</string>
     <string name="enter_a_phrase_to_save_edittext_hint">Enter a phrase to save</string>
     <string name="show_recent_button_title">SHOW RECENTLY ADDED</string>
@@ -27,5 +27,6 @@
     <string name="saved_translation_fragment">SAVED TRANSLATION</string>
     <string name="show_buttons">Show Buttons</string>
     <string name="enter_a_phrase_to_search">Enter a phrase to search</string>
+    <string name="update">UPDATE</string>
 
 </resources>
