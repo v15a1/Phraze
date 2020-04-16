@@ -1,4 +1,4 @@
-package com.visal.phraze.helpers;
+package com.visal.phraze.viewmodels;
 
 import android.os.AsyncTask;
 import android.view.View;

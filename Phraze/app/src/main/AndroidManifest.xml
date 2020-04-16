@@ -16,25 +16,25 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 <!-- making the orientation portrait to prevent screen rotation-->
         <activity
-            android:name=".TranslationActivity"
+            android:name=".views.TranslationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".fragments.LiveTranslationFragment"
+            android:name=".views.LiveTranslationFragment"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LanguageSubscriptionActivity"
+            android:name=".views.LanguageSubscriptionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddPhraseActivity"
+            android:name=".views.AddPhraseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditPhrasesActivity"
+            android:name=".views.EditPhrasesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DisplayPhrasesActivity"
+            android:name=".views.DisplayPhrasesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

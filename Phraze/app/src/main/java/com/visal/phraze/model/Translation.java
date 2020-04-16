@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.model;
 
 public class Translation {
     String abbreviation;

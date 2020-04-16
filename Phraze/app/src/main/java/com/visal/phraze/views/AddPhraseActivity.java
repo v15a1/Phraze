@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.visal.phraze.helpers.DatabaseHelper;
+import com.google.android.material.snackbar.Snackbar;
+import com.visal.phraze.viewmodels.AlertDialogComponent;
+import com.visal.phraze.R;
+import com.visal.phraze.viewmodels.DatabaseHelper;
 
 import java.util.ArrayList;
 
@@ -38,9 +41,9 @@ public class AddPhraseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_phrase);
 
-//        instance of DatabaseHelper
+        //instance of DatabaseHelper
         db = new DatabaseHelper(this);
-//        accessing UI elements
+        //accessing UI elements
         addPhraseEdittext = findViewById(R.id.add_phrase_edittext);
         saveDataButton = findViewById(R.id.save_data_button);
         cardViewHolder = findViewById(R.id.card_view_holder);
@@ -51,10 +54,10 @@ public class AddPhraseActivity extends AppCompatActivity {
         cardViewText2 = findViewById(R.id.recently_added_phrase_two);
         cardViewText3 = findViewById(R.id.recently_added_phrase_three);
 
-//        getting data from the SQLite database
+        //getting data from the SQLite database
         recentlyAdded = db.getLastAddedPhrases();
         savedPhrases = db.getAllPhrases();
-//        setting recently added cards
+        //setting recently added cards
         setRecentlyAddedCards(recentlyAdded);
 
 
@@ -64,12 +67,16 @@ public class AddPhraseActivity extends AppCompatActivity {
                 String phrase = addPhraseEdittext.getText().toString();
                 //if the text field is not empty, the data is stored in the database
                 if (!phrase.equals("") && !savedPhrases.contains(phrase.toUpperCase())) {
+                    //adding phrase to the DB
                     boolean isDataInserted = db.insertPhrase(phrase);
                     savedPhrases.add(phrase.toUpperCase());
                     recentlyAdded = db.getLastAddedPhrases();
-                    Toast.makeText(addPhraseEdittext.getContext(), "Phrase successfully saved", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onClick: has the phrase been inserted? " + isDataInserted);
+                    //invoking method to set recently added phrases
+                    setRecentlyAddedCards(db.getLastAddedPhrases());
+                    //Snackbars to notify the user
+                    Snackbar.make(v, "Item added successful.", Snackbar.LENGTH_SHORT).show();
                 } else if (savedPhrases.contains(phrase.toUpperCase())) {
+                    //displaying custom alert dialogs to the user
                     if (phrase.equals("")) {
                         AlertDialogComponent.basicAlert(AddPhraseActivity.this, "Please enter a phrase to save.");
                     } else {
@@ -84,6 +91,7 @@ public class AddPhraseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isRecentlyAddedDisplayed) {
+                    //animations
                     cardViewHolder.setVisibility(View.VISIBLE);
                     cardViewHolder.animate()
                             .alpha(0f)
@@ -93,6 +101,7 @@ public class AddPhraseActivity extends AppCompatActivity {
                     toggleRecentlyAddedButton.setText("SHOW RECENTLY ADDED");
                     isRecentlyAddedDisplayed = false;
                 } else {
+                    //animations
                     cardViewHolder.setVisibility(View.VISIBLE);
                     cardViewHolder.animate()
                             .alpha(1f)
@@ -105,17 +114,17 @@ public class AddPhraseActivity extends AppCompatActivity {
         });
     }
 
+    //method to set recently added in the UI
     public void setRecentlyAddedCards(ArrayList recentlyAdded) {
-        if (savedPhrases.size() > 3){
-                cardViewText1.setText(recentlyAdded.get(0).toString());
-                cardViewText2.setText(recentlyAdded.get(1).toString());
-                cardViewText3.setText(recentlyAdded.get(2).toString());
-        }else{
+        if (savedPhrases.size() > 3) {
+            cardViewText1.setText(recentlyAdded.get(0).toString());
+            cardViewText2.setText(recentlyAdded.get(1).toString());
+            cardViewText3.setText(recentlyAdded.get(2).toString());
+        } else {
             cardViewText1.setVisibility(View.GONE);
             cardViewText2.setVisibility(View.GONE);
             cardViewText3.setVisibility(View.GONE);
             toggleRecentlyAddedButton.setVisibility(View.GONE);
         }
     }
-    //TODO: add life cyclemethod to update list on statechange
 }

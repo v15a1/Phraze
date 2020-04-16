@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
+import com.visal.phraze.R;
+import com.visal.phraze.views.LanguageSubscriptionActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

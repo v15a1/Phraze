@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
 import android.view.View;
 

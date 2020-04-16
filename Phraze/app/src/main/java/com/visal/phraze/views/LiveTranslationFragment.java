@@ -1,4 +1,4 @@
-package com.visal.phraze.fragments;
+package com.visal.phraze.views;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,33 +25,23 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ibm.cloud.sdk.core.http.HttpMediaType;
-import com.ibm.cloud.sdk.core.security.Authenticator;
-import com.ibm.cloud.sdk.core.security.IamAuthenticator;
-import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
-import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.ibm.watson.language_translator.v3.model.TranslateOptions;
 import com.ibm.watson.language_translator.v3.model.TranslationResult;
-import com.ibm.watson.text_to_speech.v1.TextToSpeech;
-import com.ibm.watson.text_to_speech.v1.model.SynthesizeOptions;
-import com.visal.phraze.AlertDialogComponent;
-import com.visal.phraze.Language;
-import com.visal.phraze.Phrase;
+import com.visal.phraze.viewmodels.AlertDialogComponent;
+import com.visal.phraze.model.Language;
+import com.visal.phraze.model.Phrase;
 import com.visal.phraze.R;
-import com.visal.phraze.RadioRecyclerPhrasesAdapter;
-import com.visal.phraze.RecyclerViewRadioChangeListener;
-import com.visal.phraze.RefreshRecyclerView;
-import com.visal.phraze.helpers.AccessibilityHelper;
-import com.visal.phraze.helpers.DatabaseHelper;
-import com.visal.phraze.helpers.SpeechTask;
+import com.visal.phraze.viewmodels.RadioRecyclerPhrasesAdapter;
+import com.visal.phraze.viewmodels.RecyclerViewRadioChangeListener;
+import com.visal.phraze.viewmodels.AccessibilityHelper;
+import com.visal.phraze.viewmodels.DatabaseHelper;
+import com.visal.phraze.viewmodels.SpeechTask;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
+//Using Fragments for a tablayout
 public class LiveTranslationFragment extends Fragment implements RecyclerViewRadioChangeListener {
 
     private static final String TAG = LiveTranslationFragment.class.getSimpleName();
@@ -67,8 +56,8 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
     private RecyclerView.LayoutManager translatePhraseLayoutManager;
     private RecyclerView.Adapter translatePhraseAdapter;
     private static TextView translatedTextView;
-    private Button translatePhraseButton;
-    private Button translateAllPhrasesButton;
+    private static Button translatePhraseButton;
+    private static Button translateAllPhrasesButton;
     private static RelativeLayout progressLayout;
     private static LinearLayout translationDisplayLayout;
     private ImageButton playTextToSpeechButton;
@@ -91,6 +80,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                              Bundle savedInstanceState) {
         layoutView = inflater.inflate(R.layout.fragment_live_translation, container, false);
 
+        //accessing UI views
         languageSpinner = layoutView.findViewById(R.id.subscribed_language_spinner);
         translationPhraseRecyclerView = layoutView.findViewById(R.id.translate_phrase_recyclerview);
         translatedTextView = layoutView.findViewById(R.id.translation_textview);
@@ -101,6 +91,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         voiceProgress = layoutView.findViewById(R.id.voice_progress);
         translateAllPhrasesButton = layoutView.findViewById(R.id.translate_all_phrases_button);
 
+        //setting state of views
         progressLayout.setVisibility(View.GONE);
         translationDisplayLayout.setVisibility(View.GONE);
         voiceProgress.setVisibility(View.GONE);
@@ -127,6 +118,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             abbreviationList.add(x.getAbbreviation());
         }
 
+        //setting recyclerview values
         translationPhraseRecyclerView.setHasFixedSize(true);
         translatePhraseLayoutManager = new LinearLayoutManager(getActivity());
         translationPhraseRecyclerView.setLayoutManager(translatePhraseLayoutManager);
@@ -138,6 +130,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         languageSpinner.setAdapter(spinnerAdapter);
 
+        //getting the spinner value and getting the abbreviation needed for translation
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -155,11 +148,13 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             }
         });
 
+        //button to invoke asynchronous methods
         translatePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!selectedSpinnerValue.equals("Select a language")) {
                     Log.d(TAG, "onClick: abbr is " + abbreviation);
+                    //translating the selected word
                     new TranslationTask(getActivity()).execute(allPhrases.get(selectedPhraseIndex), abbreviation);
                     translationPhraseRecyclerView.setEnabled(false);
                     progressLayout.setVisibility(View.VISIBLE);
@@ -168,19 +163,23 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             }
         });
 
+        //button to translate all the phrases by all the subscribed languages
         translateAllPhrasesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.deleteTranslations();
                 translationPhraseRecyclerView.setEnabled(false);
                 Log.d(TAG, "onClick: abbreviations are " + abbreviationList);
+                //translating all the phrases
                 new TranslateAllPhrasesTask(getActivity()).execute(allPhrases, abbreviationList);
             }
         });
 
+        //button to invoke text to speech
         playTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //text to speech execution
                 new SpeechTask(playTextToSpeechButton, voiceProgress).execute(translatedTextView.getText().toString());
             }
         });
@@ -218,6 +217,21 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         Log.d(TAG, "recyclerViewRadioClick: position is " + selectedPhraseIndex);
     }
 
+    public static void setButtonEnabledState() {
+        translateAllPhrasesButton.setEnabled(true);
+        translatePhraseButton.setEnabled(true);
+        translateAllPhrasesButton.setTextColor(context.getResources().getColor(R.color.colorAccent));
+        translatePhraseButton.setTextColor(context.getResources().getColor(R.color.colorAccent));
+    }
+
+    public static void setButtonDisabledState() {
+        translateAllPhrasesButton.setEnabled(false);
+        translatePhraseButton.setEnabled(false);
+        translateAllPhrasesButton.setTextColor(context.getResources().getColor(R.color.darkGrey));
+        translatePhraseButton.setTextColor(context.getResources().getColor(R.color.darkGrey));
+    }
+
+    //class that executes and retrieves the translations asynchronously
     public static final class TranslationTask extends AsyncTask<String, Void, String> {
         public AccessibilityHelper accessibilityHelper = new AccessibilityHelper();
         private Context context;
@@ -225,15 +239,19 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         @Override
         protected void onPreExecute() {
             progressLayout.setVisibility(View.VISIBLE);
+            setButtonDisabledState();
         }
 
         public TranslationTask(Context context) {
             this.context = context;
         }
 
+        //asynchronous method
         @Override
         protected String doInBackground(String... strings) {
+            //error prevention using try-catch statements
             try {
+                //getting the translation
                 TranslateOptions translateOptions = new TranslateOptions.Builder()
                         .addText(strings[0])
                         .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
@@ -247,6 +265,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             }
         }
 
+        //setting values and state post execution
         @Override
         protected void onPostExecute(String s) {
             if (!s.equals("")) {
@@ -258,6 +277,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                 AlertDialogComponent.basicAlert(context, "Could not translate to " + selectedSpinnerValue);
             }
             progressLayout.setVisibility(View.GONE);
+            setButtonEnabledState();
         }
     }
 
@@ -272,6 +292,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         @Override
         protected void onPreExecute() {
             progressLayout.setVisibility(View.VISIBLE);
+            setButtonDisabledState();
         }
 
         @SafeVarargs
@@ -280,9 +301,12 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             Hashtable<ArrayList<String>, String> allTranslations = new Hashtable<>();
             Log.d(TAG, "doInBackground: 0" + strings[0]);
             Log.d(TAG, "doInBackground: 1" + strings[1]);
+            //translating all values by all languages
+            //using try catch for error prevention
             try {
                 for (int x = 0; x < strings[1].size(); x++) {
                     for (int y = 0; y < strings[0].size(); y++) {
+                        //translation
                         TranslateOptions translateOptions = new TranslateOptions.Builder()
                                 .addText(strings[0].get(y))
                                 .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
@@ -304,23 +328,25 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             }
         }
 
+        //setting state or values post execution
         @Override
         protected void onPostExecute(Hashtable<ArrayList<String>, String> s) {
-            if (s.size()> 0) {
+            if (s.size() > 0) {
                 allTranslatedPhrases.putAll(s);
                 Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
                 for (Map.Entry<ArrayList<String>, String> entry : allTranslatedPhrases.entrySet()) {
-                        String abbr = entry.getValue();
-                        String translation = entry.getKey().get(0);
-                        String englishPhrase = entry.getKey().get(1);
-                        String language = "";
-                        boolean successfulPersistence = db.insertTranslations(abbr, language, englishPhrase, translation);
-                        Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
+                    String abbr = entry.getValue();
+                    String translation = entry.getKey().get(0);
+                    String englishPhrase = entry.getKey().get(1);
+                    String language = "";
+                    boolean successfulPersistence = db.insertTranslations(abbr, language, englishPhrase, translation);
+                    Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
                 }
             } else {
                 AlertDialogComponent.basicAlert(context, "Could not translate all the phrases. Check the languages as some ma");
             }
             progressLayout.setVisibility(View.GONE);
+            setButtonEnabledState();
         }
     }
 }

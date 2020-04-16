@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.visal.phraze.helpers.NetworkAccessHelper;
-import com.visal.phraze.helpers.SpeechTask;
+import com.visal.phraze.R;
+import com.visal.phraze.model.Translation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.model;
 
 import java.util.Date;
 
@@ -19,6 +19,14 @@ public class Phrase {
 
     public void setPhrase(String phrase) {
         this.phrase = phrase;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override

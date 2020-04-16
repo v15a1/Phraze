@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,7 +14,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.visal.phraze.helpers.DatabaseHelper;
+import com.visal.phraze.R;
+import com.visal.phraze.viewmodels.RadioRecyclerPhrasesAdapter;
+import com.visal.phraze.viewmodels.RecyclerViewRadioChangeListener;
+import com.visal.phraze.viewmodels.DatabaseHelper;
+import com.visal.phraze.model.Phrase;
 
 import java.util.ArrayList;
 
@@ -44,18 +48,20 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_phrases);
         db = new DatabaseHelper(this);
+        //getting phrases
         phrasesInDB = db.getAllPhrases();
         allPhrases = phrasesInDB;
         phrases = db.getAllPhraseData();
 
+        //accessing UI views
         editPhraseButton = findViewById(R.id.edit_phrase_button);
         savePhraseButton = findViewById(R.id.save_edited_phrase_button);
-
         cancelEditButton = findViewById(R.id.cancel_edit);
         phraseValue = findViewById(R.id.edit_phrase_edittext);
         layout = findViewById(R.id.edit_phrase_layout);
         editTextLayout = findViewById(R.id.edit_phrase_edittext_layout);
 
+        //setting states of views
         savePhraseButton.setEnabled(false);
         savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
         editTextLayout.setVisibility(View.GONE);
@@ -80,13 +86,14 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
                     editTextLayout.animate()
                             .alpha(1f)
                             .setDuration(300);
-                    phraseValue.setHint(phrases.get(selectedPhraseIndex).phrase);
+                    phraseValue.setHint(phrases.get(selectedPhraseIndex).getPhrase());
                     savePhraseButton.setEnabled(true);
                     savePhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
                 }
             }
         });
 
+        //method to cancel editing
         cancelEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,11 +113,11 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             public void onClick(View v) {
                 newPhraseText = phraseValue.getText().toString();
                 phrases.get(selectedPhraseIndex).setPhrase(newPhraseText);
-                int updateId = phrases.get(selectedPhraseIndex).id;
+                int updateId = phrases.get(selectedPhraseIndex).getId();
                 editPhraseAdapter.notifyDataSetChanged();
+                //updating the DB
                 boolean updated = db.updateData(updateId , newPhraseText );
-                Log.d(TAG, "onClick: updated " + updated );
-                //log statements to check success of the updating query
+                //Snackbars to notify user of success of the updating query
                 if (updated){
                     Snackbar.make(layout, "Successfully updated.", Snackbar.LENGTH_SHORT);
                 }else{

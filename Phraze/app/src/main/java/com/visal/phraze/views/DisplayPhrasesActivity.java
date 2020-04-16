@@ -1,12 +1,12 @@
-package com.visal.phraze;
+package com.visal.phraze.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,12 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.visal.phraze.helpers.DatabaseHelper;
+import com.google.android.material.snackbar.Snackbar;
+import com.visal.phraze.viewmodels.AlertDialogComponent;
+import com.visal.phraze.viewmodels.DisplayPhrasesAdapter;
+import com.visal.phraze.R;
+import com.visal.phraze.viewmodels.DatabaseHelper;
+import com.visal.phraze.model.Phrase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class DisplayPhrasesActivity extends AppCompatActivity {
     private static final String TAG = DisplayPhrasesActivity.class.getSimpleName();
@@ -34,6 +38,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
     private EditText searchPhrasesTextField;
     String searchValue = "";
     ArrayList<String> allPhrases;
+    ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +46,15 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_phrases);
         db = new DatabaseHelper(this);
         phrasesInDB = db.getAllPhrases();
-//        sortPhrasesAlphabetically(phrasesInDB);
         clearSearchTextFieldButton = findViewById(R.id.display_phrases_clear_button);
         searchPhrasesTextField = findViewById(R.id.display_phrases_searchbar);
+        layout = findViewById(R.id.display_layout);
+        //accessing the Database
         allPhrases = phrasesInDB;
         phrases = db.getAllPhraseData();
+        //sorting the already retrieved Phrase arraylist to alphabetical order
         Collections.sort(phrases, new SortAlphabetically());
-        //accessing the Database
+
         //initializing RecyclerView
         phraseRecyclerView = findViewById(R.id.phrases_recyclerview);
         phraseRecyclerView.setHasFixedSize(true);
@@ -68,14 +75,15 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                     int position = target.getAdapterPosition();
-                    int phraseIdToDelete = phrases.get(position).id;
-                    AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter);
+                    int phraseIdToDelete = phrases.get(position).getId();
+                    AlertDialogComponent.DeletePhraseAlert(DisplayPhrasesActivity.this, phrases, position, phraseIdToDelete, phraseAdapter, layout);
                     phraseAdapter.notifyDataSetChanged();
                 }
             });
             touchHelper.attachToRecyclerView(phraseRecyclerView);
         }
 
+        //method used for searching for phrases by updating the phrases onTextChange
         searchPhrasesTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,7 +95,6 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 phrases = db.getAllPhraseData();
                 phrases = searchForPhrases(searchValue);
                 //updating the recycler view
-                Log.d(TAG, "onTextChanged: invoked");
                 phraseAdapter = new DisplayPhrasesAdapter(phrases);
                 phraseRecyclerView.setAdapter(phraseAdapter);
             }
@@ -109,17 +116,19 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
     private ArrayList<Phrase> searchForPhrases(String value) {
         ArrayList<Phrase> results = new ArrayList<>();
         for (Phrase x : phrases) {
-            if (x.phrase.toUpperCase().contains(value)) {
+            if (x.getPhrase().toUpperCase().contains(value)) {
                 results.add(x);
             }
         }
+        //sorting the searched results
         Collections.sort(phrases, new SortAlphabetically());
         return results;
     }
 
+    //class which implements the Comparator interface to sort the arraylist of Phrases
     class SortAlphabetically implements Comparator<Phrase> {
         public int compare(Phrase a, Phrase b) {
-            return a.phrase.compareTo(b.phrase);
+            return a.getPhrase().compareTo(b.getPhrase());
         }
     }
 }

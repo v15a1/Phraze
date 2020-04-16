@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
 public interface RefreshRecyclerView {
     public void refreshSavedTranslationFragment();

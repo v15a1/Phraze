@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/default_layout_spacing"
     android:theme="@style/AppTheme.ActionBar"
-    tools:context=".AddPhraseActivity">
+    tools:context=".views.AddPhraseActivity">
 
     <EditText
         android:id="@+id/add_phrase_edittext"

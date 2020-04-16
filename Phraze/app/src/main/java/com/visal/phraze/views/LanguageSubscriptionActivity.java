@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,9 +14,14 @@ import android.widget.RelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
-import com.visal.phraze.helpers.AccessibilityHelper;
-import com.visal.phraze.helpers.DatabaseHelper;
-import com.visal.phraze.helpers.NetworkAccessHelper;
+import com.visal.phraze.viewmodels.AlertDialogComponent;
+import com.visal.phraze.viewmodels.LanguageSubscriptionAdapter;
+import com.visal.phraze.R;
+import com.visal.phraze.viewmodels.RecyclerViewCheckBoxCheckListener;
+import com.visal.phraze.viewmodels.AccessibilityHelper;
+import com.visal.phraze.viewmodels.DatabaseHelper;
+import com.visal.phraze.viewmodels.NetworkAccessHelper;
+import com.visal.phraze.model.Language;
 
 import java.util.ArrayList;
 
@@ -39,19 +44,24 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_subscription);
+        //getting all the subscribed languages
         db = new DatabaseHelper(this);
         subscribedLanguages = db.getAllSubscriptions();
-        for (Language x: subscribedLanguages){
+
+        //adding the indexes of the subscribed languages
+        for (Language x : subscribedLanguages) {
             checkedCardIndexes.add(x.getIndex());
         }
 
+        //getting network availability
         networkAccessHelper = new NetworkAccessHelper(this);
-        if (networkAccessHelper.isNetworkAvailable()){
-        //executing task to retrieve language list
-        new LanguagesTask().execute(true);
-        }else{
+        if (networkAccessHelper.isNetworkAvailable()) {
+            //executing task to retrieve language list
+            new LanguagesTask().execute(true);
+        } else {
             AlertDialogComponent.basicAlert(this, "Network error. Please check if you are connected to the internet");
         }
+        //accessing UI elements
         layout = findViewById(R.id.language_subs_activity);
         progressView = findViewById(R.id.language_subscription_progressbar);
         subscriptionRecyclerView = findViewById(R.id.language_subscription_recyclerview);
@@ -60,9 +70,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         subscriptionRecyclerView.setLayoutManager(subscriptionLayoutManager);
         subscriptionUpdateButton = findViewById(R.id.language_subscription_update_button);
 
+        //setting state of views
         subscriptionUpdateButton.setEnabled(false);
         subscriptionUpdateButton.setTextColor(getResources().getColor(R.color.darkGrey));
 
+        //updating the DB with the new subscriptions
         subscriptionUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,11 +82,12 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
                 db.deleteLanguageSubscriptionTableData();
                 for (int x = 0; x < checkedCardIndexes.size(); x++) {
                     int y = checkedCardIndexes.get(x);
-                    Log.d(TAG, "onClick: inside loop");
+                    //updating the DB
                     boolean success = db.insertLanguageSubscriptions(y, languages.get(y).getName(), languages.get(y).getLanguage());
-                    if (success){
+                    //snackbar to display success of failure
+                    if (success) {
                         Snackbar.make(layout, "Successfully updated subscriptions", Snackbar.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         Snackbar.make(layout, "Could NOT updated subscriptions", Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -82,25 +95,29 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         });
     }
 
-
+    //overridden method in an interface which is used to get the arraylist of the indexes of checked languages
     @Override
     public void recyclerOnCheck(View v, ArrayList<Integer> arr) {
         checkedCardIndexes = arr;
     }
 
+    //class that executes and retrieves all the languages asynchronously
     public class LanguagesTask extends AsyncTask<Boolean, Void, ArrayList<IdentifiableLanguage>> {
         public AccessibilityHelper accessibilityHelper = new AccessibilityHelper();
 
+        //method to execute in the background
         @Override
         protected ArrayList<IdentifiableLanguage> doInBackground(Boolean... booleans) {
             ArrayList<IdentifiableLanguage> languages = new ArrayList();
             if (booleans[0]) {
+                //getting all the languages
                 IdentifiableLanguages lans = accessibilityHelper.getService().listIdentifiableLanguages().execute().getResult();
                 languages.addAll(lans.getLanguages());
             }
             return languages;
         }
 
+        //methods, states, variables to assign or set post execution
         @Override
         protected void onPostExecute(ArrayList<IdentifiableLanguage> identifiableLanguages) {
             LanguageSubscriptionActivity ls = new LanguageSubscriptionActivity();

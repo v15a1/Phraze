@@ -1,4 +1,4 @@
-package com.visal.phraze.helpers;
+package com.visal.phraze.viewmodels;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -11,6 +11,7 @@ public class NetworkAccessHelper {
         this.context = context;
     }
 
+    //method to Access HAL to check if network is available
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

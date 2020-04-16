@@ -1,4 +1,4 @@
-package com.visal.phraze.fragments;
+package com.visal.phraze.views;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,17 +16,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.visal.phraze.Language;
+import com.visal.phraze.model.Language;
 import com.visal.phraze.R;
-import com.visal.phraze.SavedTranslationAdapter;
-import com.visal.phraze.Translation;
-import com.visal.phraze.TranslationActivity;
-import com.visal.phraze.helpers.DatabaseHelper;
+import com.visal.phraze.viewmodels.SavedTranslationAdapter;
+import com.visal.phraze.model.Translation;
+import com.visal.phraze.viewmodels.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+//using fragments for tablayout
 public class SavedTranslationFragment extends Fragment {
 
     private static DatabaseHelper db;
@@ -61,15 +61,17 @@ public class SavedTranslationFragment extends Fragment {
                              Bundle savedInstanceState) {
         layoutView = inflater.inflate(R.layout.fragment_saved_translation, container, false);
 
+        //accessing UI views
         languageSelector = layoutView.findViewById(R.id.saved_translation_spinner);
         updateButton = layoutView.findViewById(R.id.saved_translations_recyclerview_update_button);
 
+        //getting values from the DB
         db = new DatabaseHelper(getActivity());
         savedLanguages = new ArrayList<>();
         savedLanguagesString = new ArrayList<>();
         selectedLanguageTranslation = new ArrayList<>();
         savedLanguages = db.getAllSubscriptions();
-        savedLanguagesString.add("Select a language");
+        savedLanguagesString.add("Show all");
 
         for (Language x : savedLanguages) {
             savedLanguagesString.add(x.getName());
@@ -79,6 +81,7 @@ public class SavedTranslationFragment extends Fragment {
         allTranslations = db.getAlltranslations();
         selectedLanguageTranslation = allTranslations;
 
+        //setting state of the views
         savedTranslationsRecyclerView = layoutView.findViewById(R.id.saved_translations_recyclerview);
         savedTranslationsRecyclerView.setHasFixedSize(true);
         savedTranslationManager = new LinearLayoutManager(getActivity());
@@ -91,6 +94,7 @@ public class SavedTranslationFragment extends Fragment {
         languageSelector.setAdapter(spinnerAdapter);
 
 
+        //updating recyclerview to display values corresponding to the selected language
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +102,11 @@ public class SavedTranslationFragment extends Fragment {
                 for (Language x : savedLanguages) {
                     if (x.getName().equals(selectedValue)) {
                         abbreviation = x.getAbbreviation();
-                        Log.d(TAG, "onClick: " + abbreviation);
                     }
                 }
                 ArrayList<Translation> results = new ArrayList<>();
-
-                if (selectedValue.equals("Select a language")) {
+                //getting the translations and adding them to an array to display
+                if (selectedValue.equals("Show all")) {
                     results.addAll(allTranslations);
                 } else {
                     for (Translation x : allTranslations) {
@@ -112,12 +115,12 @@ public class SavedTranslationFragment extends Fragment {
                         }
                     }
                 }
+                //sorting the results
                 Collections.sort(results, new SortResultAlphabetically());
                 savedTranslationsAdapter = new SavedTranslationAdapter(getActivity(), results);
                 savedTranslationsRecyclerView.setAdapter(savedTranslationsAdapter);
             }
         });
-
         return layoutView;
 
     }
@@ -150,6 +153,7 @@ public class SavedTranslationFragment extends Fragment {
         savedTranslationsAdapter.notifyDataSetChanged();
     }
 
+    //class with comparator implemented for sorting
     class SortResultAlphabetically implements Comparator<Translation> {
         @Override
         public int compare(Translation o1, Translation o2) {

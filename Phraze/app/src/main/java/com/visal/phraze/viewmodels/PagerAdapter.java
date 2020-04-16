@@ -1,12 +1,11 @@
-package com.visal.phraze.fragments;
-
-import android.content.Context;
+package com.visal.phraze.viewmodels;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.visal.phraze.helpers.DatabaseHelper;
+import com.visal.phraze.views.LiveTranslationFragment;
+import com.visal.phraze.views.SavedTranslationFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
     public PagerAdapter(FragmentManager fm) {

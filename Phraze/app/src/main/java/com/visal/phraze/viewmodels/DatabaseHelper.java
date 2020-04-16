@@ -1,4 +1,4 @@
-package com.visal.phraze.helpers;
+package com.visal.phraze.viewmodels;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.visal.phraze.Language;
-import com.visal.phraze.Phrase;
-import com.visal.phraze.Translation;
+import com.visal.phraze.model.Language;
+import com.visal.phraze.model.Phrase;
+import com.visal.phraze.model.Translation;
 
 import java.util.ArrayList;
 

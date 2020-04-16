@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.visal.phraze.R;
+
 public class MainActivity extends AppCompatActivity {
 
     Button addPhraseActivityBtn;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     boolean isButtonsDisplayed = true;
     Drawable expandArrow;
     Drawable collapeArrow;
+
+    //use of Shared Preferences to save state
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String sharedPrefFile = "com.visal.phraze";
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 toggleButtonLayoutBtn.setVisibility(View.VISIBLE);
+                //animating the button
                 toggleButtonLayoutBtn.animate()
                 .alpha(1f)
                 .setDuration(300);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
 
         buttonLayout.setAlpha(0f);
+        //animating the button layout and displaying the buttons
         toggleButtonLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //OnClickListeners to start the activities
         addPhraseActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //saving state using Shared Preferences
         editor = sharedPreferences.edit();
         editor.putBoolean("showButtonMenu", isButtonsDisplayed);
         editor.apply();

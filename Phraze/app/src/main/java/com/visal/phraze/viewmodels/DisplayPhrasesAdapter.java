@@ -1,4 +1,4 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.visal.phraze.helpers.DateTime;
+import com.visal.phraze.R;
+import com.visal.phraze.model.Phrase;
 
 import java.util.ArrayList;
-import java.util.List;
+
 //https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
 public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAdapter.PhraseViewHolder> {
 
@@ -33,8 +34,8 @@ public class DisplayPhrasesAdapter extends RecyclerView.Adapter<DisplayPhrasesAd
 
     @Override
     public void onBindViewHolder(@NonNull PhraseViewHolder holder, int position) {
-        String phrase = phrases.get(position).phrase;
-        String daysAgo = DateTime.getDaysPassed(phrases.get(position).dateAdded);
+        String phrase = phrases.get(position).getPhrase();
+        String daysAgo = DateTime.getDaysPassed(phrases.get(position).getDateAdded());
 
         holder.phraseTextView.setText(phrase);
         holder.daysBeforeTextView.setText(daysAgo);

@@ -1,6 +1,5 @@
-package com.visal.phraze;
+package com.visal.phraze.viewmodels;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.visal.phraze.helpers.DateTime;
+import com.visal.phraze.R;
+import com.visal.phraze.model.Phrase;
 
 import java.util.List;
 
@@ -38,9 +38,9 @@ public class RadioRecyclerPhrasesAdapter extends RecyclerView.Adapter<RadioRecyc
 
     @Override
     public void onBindViewHolder(@NonNull final PhraseViewHolder holder, final int position) {
-        String phrase = phrases.get(position).phrase;
+        String phrase = phrases.get(position).getPhrase();
         holder.phraseTextview.setText(phrase);
-        holder.daysAgoTextview.setText(DateTime.getDaysPassed(phrases.get(position).dateAdded));
+        holder.daysAgoTextview.setText(DateTime.getDaysPassed(phrases.get(position).getDateAdded()));
         if (selectedCardIndex == position){
             holder.radioButton.setChecked(true);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#6A6A6A"));
