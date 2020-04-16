@@ -1,4 +1,4 @@
-package com.visal.phraze.viewmodels;
+package com.visal.phraze.viewmodels.adapters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

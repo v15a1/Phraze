@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import android.widget.Spinner;
 
 import com.visal.phraze.model.Language;
 import com.visal.phraze.R;
-import com.visal.phraze.viewmodels.SavedTranslationAdapter;
+import com.visal.phraze.viewmodels.adapters.SavedTranslationAdapter;
 import com.visal.phraze.model.Translation;
 import com.visal.phraze.viewmodels.DatabaseHelper;
 

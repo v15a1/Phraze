@@ -14,6 +14,7 @@ import com.ibm.watson.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.text_to_speech.v1.model.SynthesizeOptions;
 import com.visal.phraze.R;
 
+//Class which performs an asynchronous task to convert text to speech
 public class SpeechTask extends AsyncTask<String, Void, String> {
 
     private static final String API_KEY = "FkcJ3Vew18INQ0K4voxc41b6sh4UCxhR_udlUiivfvL7";

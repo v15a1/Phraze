@@ -1,11 +1,13 @@
 package com.visal.phraze.model;
 
+//Translated class to store data of a translation
 public class Translation {
-    String abbreviation;
-    String language;
-    String englishPhrase;
-    String translation;
+    private String abbreviation;
+    private String language;
+    private String englishPhrase;
+    private String translation;
 
+    //constructor
     public Translation(String abbreviation, String language, String englishPhrase, String translation) {
         this.abbreviation = abbreviation;
         this.language = language;
@@ -23,6 +25,7 @@ public class Translation {
                 "}\n";
     }
 
+    //getters
     public String getLanguage() {
         return language;
     }

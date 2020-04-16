@@ -8,17 +8,21 @@
 
     <RelativeLayout
         android:id="@+id/phrase_translation_progressbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="0dp"
+        android:background="#ffffff"
         android:gravity="center"
-        android:translationZ="100dp">
+        android:translationZ="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/translate_phrase_recyclerview"
+        app:layout_constraintEnd_toEndOf="@+id/translate_phrase_recyclerview"
+        app:layout_constraintStart_toStartOf="@+id/translate_phrase_recyclerview"
+        app:layout_constraintTop_toTopOf="@+id/translate_phrase_recyclerview">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
-
-
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

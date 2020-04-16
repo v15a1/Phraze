@@ -1,12 +1,16 @@
 package com.visal.phraze.views;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +19,8 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.visal.phraze.R;
-import com.visal.phraze.viewmodels.RadioRecyclerPhrasesAdapter;
-import com.visal.phraze.viewmodels.RecyclerViewRadioChangeListener;
+import com.visal.phraze.viewmodels.adapters.RadioRecyclerPhrasesAdapter;
+import com.visal.phraze.viewmodels.interfaces.RecyclerViewRadioChangeListener;
 import com.visal.phraze.viewmodels.DatabaseHelper;
 import com.visal.phraze.model.Phrase;
 
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 public class EditPhrasesActivity extends AppCompatActivity implements RecyclerViewRadioChangeListener {
 
     private static final String TAG = EditPhrasesActivity.class.getSimpleName();
+    private static final String TITLE = "Edit Phrases";
 
     DatabaseHelper db;
     private ArrayList<String> phrasesInDB;
@@ -76,6 +81,13 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
         editPhraseAdapter = new RadioRecyclerPhrasesAdapter(phrases, this);
         editPhraseRecyclerView.setAdapter(editPhraseAdapter);
 
+        //displaying the actionbat and setting the title
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(TITLE);
+        }
+
         //onclick listener to get the selected item and enable editting
         editPhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +98,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
                     editTextLayout.animate()
                             .alpha(1f)
                             .setDuration(300);
-                    phraseValue.setHint(phrases.get(selectedPhraseIndex).getPhrase());
+                    phraseValue.setText(phrases.get(selectedPhraseIndex).getPhrase());
                     savePhraseButton.setEnabled(true);
                     savePhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
                 }
@@ -103,6 +115,7 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
                 editTextLayout.setVisibility(View.GONE);
                 savePhraseButton.setEnabled(false);
                 savePhraseButton.setTextColor(getResources().getColor(R.color.darkGrey));
+                phraseValue.setText("");
             }
         });
 
@@ -119,9 +132,9 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
                 boolean updated = db.updateData(updateId , newPhraseText );
                 //Snackbars to notify user of success of the updating query
                 if (updated){
-                    Snackbar.make(layout, "Successfully updated.", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(layout, "Successfully updated.", Snackbar.LENGTH_SHORT).show();
                 }else{
-                    Snackbar.make(layout, "Could not Update field", Snackbar.LENGTH_SHORT);
+                    Snackbar.make(layout, "Could not Update field", Snackbar.LENGTH_SHORT).show();
                 }
                 editTextLayout.setVisibility(View.GONE);
                 savePhraseButton.setEnabled(false);
@@ -139,5 +152,16 @@ public class EditPhrasesActivity extends AppCompatActivity implements RecyclerVi
             editPhraseButton.setEnabled(true);
             editPhraseButton.setTextColor(getResources().getColor(R.color.colorAccent));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //method to change activities
+            startActivity(new Intent(EditPhrasesActivity.this, MainActivity.class));
+            finish();       //method call to destroy the activity from the memory
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

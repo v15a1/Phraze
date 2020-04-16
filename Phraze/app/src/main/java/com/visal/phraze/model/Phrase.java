@@ -2,17 +2,20 @@ package com.visal.phraze.model;
 
 import java.util.Date;
 
+//phrase class to store data related to all the phrases
 public class Phrase {
     int id;
     String phrase;
     String dateAdded;
 
+    //constructor
     public Phrase(int id, String phrase, String dateAdded) {
         this.id = id;
         this.phrase = phrase;
         this.dateAdded = dateAdded;
     }
 
+    //getters and setters
     public String getPhrase() {
         return phrase;
     }
@@ -29,6 +32,7 @@ public class Phrase {
         return id;
     }
 
+    //to string method
     @Override
     public String toString() {
         return "Phrase{" +

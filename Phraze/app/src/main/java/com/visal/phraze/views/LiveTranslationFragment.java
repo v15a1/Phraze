@@ -31,8 +31,8 @@ import com.visal.phraze.viewmodels.AlertDialogComponent;
 import com.visal.phraze.model.Language;
 import com.visal.phraze.model.Phrase;
 import com.visal.phraze.R;
-import com.visal.phraze.viewmodels.RadioRecyclerPhrasesAdapter;
-import com.visal.phraze.viewmodels.RecyclerViewRadioChangeListener;
+import com.visal.phraze.viewmodels.adapters.RadioRecyclerPhrasesAdapter;
+import com.visal.phraze.viewmodels.interfaces.RecyclerViewRadioChangeListener;
 import com.visal.phraze.viewmodels.AccessibilityHelper;
 import com.visal.phraze.viewmodels.DatabaseHelper;
 import com.visal.phraze.viewmodels.SpeechTask;
@@ -303,10 +303,10 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
             Log.d(TAG, "doInBackground: 1" + strings[1]);
             //translating all values by all languages
             //using try catch for error prevention
-            try {
-                for (int x = 0; x < strings[1].size(); x++) {
-                    for (int y = 0; y < strings[0].size(); y++) {
-                        //translation
+            for (int x = 0; x < strings[1].size(); x++) {
+                for (int y = 0; y < strings[0].size(); y++) {
+                    //translation
+                    try {
                         TranslateOptions translateOptions = new TranslateOptions.Builder()
                                 .addText(strings[0].get(y))
                                 .source(com.ibm.watson.language_translator.v3.util.Language.ENGLISH)
@@ -320,12 +320,12 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                         translationResult.add(strings[0].get(y));
                         allTranslations.put(translationResult, strings[1].get(x));
                         Log.d(TAG, "doInBackground: all translations " + res + ", " + strings[0].get(y));
+                    } catch (Exception e) {
+                        Log.d(TAG, "doInBackground: unsuccessfull translation");
                     }
                 }
-                return allTranslations;
-            } catch (Exception e) {
-                return allTranslations;
             }
+            return allTranslations;
         }
 
         //setting state or values post execution
@@ -333,6 +333,7 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         protected void onPostExecute(Hashtable<ArrayList<String>, String> s) {
             if (s.size() > 0) {
                 allTranslatedPhrases.putAll(s);
+                boolean success = true;
                 Log.d(TAG, "onPostExecute: size of array is " + allTranslatedPhrases);
                 for (Map.Entry<ArrayList<String>, String> entry : allTranslatedPhrases.entrySet()) {
                     String abbr = entry.getValue();
@@ -340,10 +341,13 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                     String englishPhrase = entry.getKey().get(1);
                     String language = "";
                     boolean successfulPersistence = db.insertTranslations(abbr, language, englishPhrase, translation);
-                    Log.d(TAG, "onPostExecute: is data saved " + successfulPersistence);
+                }
+                if (s.size() != (allPhrases.size() * subscribedLanguages.size())) {
+                    AlertDialogComponent.translationPageAlert(context, "Not all phrases could be translated. The translated phrases have been saved.");
+
                 }
             } else {
-                AlertDialogComponent.basicAlert(context, "Could not translate all the phrases. Check the languages as some ma");
+                AlertDialogComponent.translationPageAlert(context, "Could not translate all the phrases. Check the languages as some ma");
             }
             progressLayout.setVisibility(View.GONE);
             setButtonEnabledState();

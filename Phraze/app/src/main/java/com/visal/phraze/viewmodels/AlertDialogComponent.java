@@ -1,13 +1,16 @@
 package com.visal.phraze.viewmodels;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.visal.phraze.model.Phrase;
+import com.visal.phraze.views.TranslationActivity;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,26 @@ public class AlertDialogComponent {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();     //showing the alert
+    }
+
+    public static void translationPageAlert(final Context context, String message) {
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+
+        //setting a customized alert title
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //starting a new activity to refresh the fragment
+                        context.startActivity(new Intent(context, TranslationActivity.class));
+                        ((Activity)context).finish();
                     }
                 });
 

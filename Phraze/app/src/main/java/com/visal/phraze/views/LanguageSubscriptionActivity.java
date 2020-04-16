@@ -1,12 +1,16 @@
 package com.visal.phraze.views;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -15,9 +19,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.visal.phraze.viewmodels.AlertDialogComponent;
-import com.visal.phraze.viewmodels.LanguageSubscriptionAdapter;
+import com.visal.phraze.viewmodels.adapters.LanguageSubscriptionAdapter;
 import com.visal.phraze.R;
-import com.visal.phraze.viewmodels.RecyclerViewCheckBoxCheckListener;
+import com.visal.phraze.viewmodels.interfaces.RecyclerViewCheckBoxCheckListener;
 import com.visal.phraze.viewmodels.AccessibilityHelper;
 import com.visal.phraze.viewmodels.DatabaseHelper;
 import com.visal.phraze.viewmodels.NetworkAccessHelper;
@@ -26,7 +30,10 @@ import com.visal.phraze.model.Language;
 import java.util.ArrayList;
 
 public class LanguageSubscriptionActivity extends AppCompatActivity implements RecyclerViewCheckBoxCheckListener {
+
     private static final String TAG = LanguageSubscriptionActivity.class.getSimpleName();
+    private static final String TITLE = "Language Subscription";
+
     private static ArrayList<IdentifiableLanguage> languages;
     private static RecyclerView subscriptionRecyclerView;
     private static RecyclerView.Adapter subscriptionAdapter;
@@ -73,6 +80,13 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
         //setting state of views
         subscriptionUpdateButton.setEnabled(false);
         subscriptionUpdateButton.setTextColor(getResources().getColor(R.color.darkGrey));
+
+        //displaying the actionbat and setting the title
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(TITLE);
+        }
 
         //updating the DB with the new subscriptions
         subscriptionUpdateButton.setOnClickListener(new View.OnClickListener() {
@@ -131,5 +145,16 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements R
             subscriptionUpdateButton.setTextColor(getResources().getColor(R.color.green));
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //method to change activities
+            startActivity(new Intent(LanguageSubscriptionActivity.this, MainActivity.class));
+            finish();       //method call to destroy the activity from the memory
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

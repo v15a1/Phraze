@@ -1,4 +1,4 @@
-package com.visal.phraze.viewmodels;
+package com.visal.phraze.viewmodels.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.visal.phraze.R;
+import com.visal.phraze.viewmodels.interfaces.RecyclerViewCheckBoxCheckListener;
 import com.visal.phraze.views.LanguageSubscriptionActivity;
 
 import java.util.ArrayList;

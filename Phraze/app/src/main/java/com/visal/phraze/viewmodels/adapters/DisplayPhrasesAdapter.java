@@ -1,4 +1,4 @@
-package com.visal.phraze.viewmodels;
+package com.visal.phraze.viewmodels.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.visal.phraze.R;
 import com.visal.phraze.model.Phrase;
+import com.visal.phraze.viewmodels.DateTime;
 
 import java.util.ArrayList;
 

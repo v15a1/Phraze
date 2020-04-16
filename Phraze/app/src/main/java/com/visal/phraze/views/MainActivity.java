@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.visal.phraze.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     Button addPhraseActivityBtn;
     Button showPhrasesActivityBtn;
     Button editPhraseActivityBtn;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Button translateActivityBtn;
     Button toggleButtonLayoutBtn;
     LinearLayout buttonLayout;
-    boolean isButtonsDisplayed = true;
+    boolean isButtonsDisplayed;
     Drawable expandArrow;
     Drawable collapeArrow;
 
@@ -50,49 +52,23 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         isButtonsDisplayed = sharedPreferences.getBoolean("showButtonMenu", false);
 
+
         buttonLayout.setVisibility(View.GONE);
         toggleButtonLayoutBtn.setVisibility(View.GONE);
         toggleButtonLayoutBtn.setAlpha(0f);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                toggleButtonLayoutBtn.setVisibility(View.VISIBLE);
-                //animating the button
-                toggleButtonLayoutBtn.animate()
+        toggleButtonLayoutBtn.setVisibility(View.VISIBLE);
+        //animating the button
+        toggleButtonLayoutBtn.animate()
                 .alpha(1f)
                 .setDuration(300);
-            }
-        }, 2000);
 
         buttonLayout.setAlpha(0f);
         //animating the button layout and displaying the buttons
         toggleButtonLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isButtonsDisplayed) {
-                    buttonLayout.setVisibility(View.VISIBLE);
-                    buttonLayout.animate()
-                            .alpha(1.0f)
-                            .translationY(0)
-                            .setDuration(300);
-                    buttonLayout.setEnabled(true);
-                    toggleButtonLayoutBtn.setCompoundDrawablesWithIntrinsicBounds(null, expandArrow, null, null);
-                    toggleButtonLayoutBtn.setText("Hide buttons");
-                    isButtonsDisplayed = false;
-                } else {
-                    buttonLayout.setVisibility(View.VISIBLE);
-                    buttonLayout.animate()
-                            .alpha(0.0f)
-                            .translationY(buttonLayout.getHeight())
-                            .setDuration(300);
-                    buttonLayout.setVisibility(View.GONE);
-                    buttonLayout.setEnabled(false);
-                    toggleButtonLayoutBtn.setCompoundDrawablesWithIntrinsicBounds(null, collapeArrow, null, null);
-                    toggleButtonLayoutBtn.setText("Show buttons");
-                    isButtonsDisplayed = true;
-                }
+                setButtonLayoutDisplayState(isButtonsDisplayed);
             }
         });
 
@@ -133,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -140,5 +117,32 @@ public class MainActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
         editor.putBoolean("showButtonMenu", isButtonsDisplayed);
         editor.apply();
+    }
+
+    private void setButtonLayoutDisplayState(boolean visible){
+        {
+            if (visible) {
+                buttonLayout.setVisibility(View.VISIBLE);
+                buttonLayout.animate()
+                        .alpha(1.0f)
+                        .translationY(0)
+                        .setDuration(300);
+                buttonLayout.setEnabled(true);
+                toggleButtonLayoutBtn.setCompoundDrawablesWithIntrinsicBounds(null, expandArrow, null, null);
+                toggleButtonLayoutBtn.setText("Hide buttons");
+                isButtonsDisplayed = false;
+            } else {
+                buttonLayout.setVisibility(View.VISIBLE);
+                buttonLayout.animate()
+                        .alpha(0.0f)
+                        .translationY(buttonLayout.getHeight())
+                        .setDuration(300);
+                buttonLayout.setVisibility(View.GONE);
+                buttonLayout.setEnabled(false);
+                toggleButtonLayoutBtn.setCompoundDrawablesWithIntrinsicBounds(null, collapeArrow, null, null);
+                toggleButtonLayoutBtn.setText("Show buttons");
+                isButtonsDisplayed = true;
+            }
+        }
     }
 }
