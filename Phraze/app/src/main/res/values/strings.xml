@@ -12,7 +12,6 @@
     <string name="language_subscription_update_button_text">UPDATE</string>
     <string name="translate_text">TRANSLATE</string>
     <string name="translate_all_text">TRANSLATE ALL</string>
-
     <string name="live_translation_tab_title">Live Translation</string>
     <string name="saved_translation_tab_title">Saved Translations</string>
     <!-- String resources for language translation-->
@@ -21,8 +20,6 @@
     <!-- String resources for text to speech-->
     <string name="text_speech_apikey">FkcJ3Vew18INQ0K4voxc41b6sh4UCxhR_udlUiivfvL7</string>
     <string name="text_speech_url">https://api.eu-gb.text-to-speech.watson.cloud.ibm.com/instances/a10ccd75-1141-4c16-8c4b-d1701d8b7ef5</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="live_translation_fragment">LIVE TRANSLATION</string>
     <string name="saved_translation_fragment">SAVED TRANSLATION</string>
     <string name="show_buttons">Show Buttons</string>

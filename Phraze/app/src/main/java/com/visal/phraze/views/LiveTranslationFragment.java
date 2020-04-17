@@ -158,7 +158,8 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                     new TranslationTask(getActivity()).execute(allPhrases.get(selectedPhraseIndex), abbreviation);
                     translationPhraseRecyclerView.setEnabled(false);
                     progressLayout.setVisibility(View.VISIBLE);
-
+                } else {
+                    AlertDialogComponent.basicAlert(getActivity(), "Please select a language to translate to.");
                 }
             }
         });
@@ -167,11 +168,16 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
         translateAllPhrasesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.deleteTranslations();
-                translationPhraseRecyclerView.setEnabled(false);
-                Log.d(TAG, "onClick: abbreviations are " + abbreviationList);
-                //translating all the phrases
-                new TranslateAllPhrasesTask(getActivity()).execute(allPhrases, abbreviationList);
+                if (!selectedSpinnerValue.equals("Select a language")) {
+                    //truncating the table
+                    db.deleteTranslations();
+                    translationPhraseRecyclerView.setEnabled(false);
+                    Log.d(TAG, "onClick: abbreviations are " + abbreviationList);
+                    //translating all the phrases
+                    new TranslateAllPhrasesTask(getActivity()).execute(allPhrases, abbreviationList);
+                }else{
+                    AlertDialogComponent.basicAlert(getActivity(), "Please select a language to translate to.");
+                }
             }
         });
 
@@ -344,7 +350,8 @@ public class LiveTranslationFragment extends Fragment implements RecyclerViewRad
                 }
                 if (s.size() != (allPhrases.size() * subscribedLanguages.size())) {
                     AlertDialogComponent.translationPageAlert(context, "Not all phrases could be translated. The translated phrases have been saved.");
-
+                } else {
+                    AlertDialogComponent.translationPageAlert(context, "All the phrases have been translated and saved");
                 }
             } else {
                 AlertDialogComponent.translationPageAlert(context, "Could not translate all the phrases. Check the languages as some ma");
