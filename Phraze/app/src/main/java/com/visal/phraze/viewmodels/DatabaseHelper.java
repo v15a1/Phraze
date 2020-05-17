@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     //constant values of the database and table
-    private static final String DATABASE_NAME = "z.db";
+    private static final String DATABASE_NAME = "phraze_app.db";
     private static final String PHRASE_TABLE = "phrase_table";
     private static final String SUBSCRIBED_LANGUAGES_TABLE = "subscribed_languages_table";
     private static final String ALL_TRANSLATIONS_TABLE = "all_translations_table";
